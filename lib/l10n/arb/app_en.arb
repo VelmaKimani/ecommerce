@@ -1,0 +1,442 @@
+{
+    "@@locale": "en",
+    "createYourAccount": "Create Your Account",
+    "@createYourAccount": {
+        "description": "Create Your Account"
+    },
+    "email": "Email",
+    "@email": {
+        "description": "Anywhere the word email is needed"
+    },
+    "enterEmail": "Enter your assigned email address",
+    "@enterEmail": {
+        "description": "Anywhere the word email is needed"
+    },
+    "enterName": "Enter your name",
+    "@enterName": {
+        "description": "Anywhere the word email is needed"
+    },
+    "name": "Name",
+    "@name": {
+        "description": "Anywhere the word name is needed"
+    },
+    "password": "Password",
+    "@password": {
+        "description": "Anywhere the word password is needed"
+    },
+    "enterPassword": "Password",
+    "@enterPassword": {
+        "description": "Enter your password - min 6 characters"
+    },
+    "iAgreeWith": "I agree with ",
+    "@iAgreeWith": {
+        "description": "I agree with "
+    },
+    "termsAndConditions": "Terms & Conditions",
+    "@termsAndConditions": {
+        "description": "Terms & Conditions"
+    },
+    "signingIn": "Signing in ...",
+    "@signingIn": {
+        "description": "Text shown on the button to sign a user in"
+    },
+    "signIn": "Sign in",
+    "@signIn": {
+        "description": "Text shown on the button to sign a user in"
+    },
+    "chooseAnAccountToSignUp": "Choose An Account To Sign Up",
+    "@chooseAnAccountToSignUp": {
+        "description": "Text shown on the sign up page"
+    },
+    "signUpAsBuyer": "Sign Up As Buyer",
+    "@signUpAsBuyer": {},
+    "signUpAsOmc": "Sign Up As OMC",
+    "@signUpAsOmc": {},
+    "logInAsBuyer": "Log In As Buyer",
+    "@logInAsBuyer": {},
+    "logInAsOmc": "Log In As OMC",
+    "@logInAsOmc": {},
+    "rememberMe": "Remember me",
+    "@rememberMe": {},
+    "selectOMC": "Select OMC",
+    "@selectOMC": {
+        "description": "Text on the product page"
+    },
+    "all": "All",
+    "@all": {
+        "description": "Text for the all option of the tab bar"
+    },
+    "dealerName": "Dealer name: {dealerName}",
+    "@dealerName": {
+        "description": "Shows the dealer name on the ordering page",
+        "placeholders": {
+            "dealerName": {
+                "type": "String"
+            }
+        }
+    },
+    "productPrice": "Product price: {price}",
+    "@productPrice": {
+        "description": "Shows the product price on the ordering page",
+        "placeholders": {
+            "price": {
+                "type": "String"
+            }
+        }
+    },
+    "depot": "Depot: {depot}",
+    "@depot": {
+        "description": "Shows the depot on the ordering page",
+        "placeholders": {
+            "depot": {
+                "type": "String"
+            }
+        }
+    },
+    "availableVolumeInLitres": "Available Volume: {volume} litres",
+    "@availableVolumeInLitres": {
+        "description": "Shows the available volume in litres on the ordering page",
+        "placeholders": {
+            "volume": {
+                "type": "double"
+            }
+        }
+    },
+    "minimumOrderVolumeInLitres": "Minimum Order Volume: {volume} litres",
+    "@minimumOrderVolumeInLitres": {
+        "description": "Shows the minimum order volume in litres on the ordering page",
+        "placeholders": {
+            "volume": {
+                "type": "double"
+            }
+        }
+    },
+    "buy": "Buy",
+    "@buy": {
+        "description": "Anywhere the word buy is needed"
+    },
+    "quantity": "Quantity",
+    "@quantity": {
+        "description": "Anywhere the word quantity is needed"
+    },
+    "addToCart": "Add to Cart",
+    "@addToCart": {
+        "description": "Text shown on the button to add a product to the cart"
+    },
+    "productAddedToCart": "Product added to cart",
+    "@productAddedToCart": {
+        "description": "Text shown when a product is added to the cart"
+    },
+    "confirmOrder": "Confirm Order",
+    "@confirmOrder": {
+        "description": "Text shown on the button to confirm for the order"
+    },
+    "confirmingOrder": "Confirming Order ...",
+    "@confirmingOrder": {
+        "description": "Text shown on the button to confirm for the order"
+    },
+    "orderPlaced": "Order Placed",
+    "@orderPlaced": {
+        "description": "Text shown when the order is placed"
+    },
+    "orderNumber": "Ref: {orderNumber}",
+    "@orderNumber": {
+        "description": "Text shown on the order confirmation page",
+        "placeholders": {
+            "orderNumber": {
+                "type": "String"
+            }
+        }
+    },
+    "orderDate": "Order Date: {orderDate}",
+    "@orderDate": {
+        "description": "Text shown on the order confirmation page",
+        "placeholders": {
+            "orderDate": {
+                "type": "String"
+            }
+        }
+    },
+    "orderTotal": "Order Total: {orderTotal}",
+    "@orderTotal": {
+        "description": "Text shown on the order confirmation page",
+        "placeholders": {
+            "orderTotal": {
+                "type": "String"
+            }
+        }
+    },
+    "orderPaymentStatus": "Payment Status: {orderPaymentStatus}",
+    "@orderPaymentStatus": {
+        "description": "Text shown on the order confirmation page",
+        "placeholders": {
+            "orderPaymentStatus": {
+                "type": "String"
+            }
+        }
+    },
+    "quantityAndPrice": "{quantity} x {price} KES",
+    "@quantityAndPrice": {
+        "description": "Shows the quantity and price of the product",
+        "placeholders": {
+            "quantity": {
+                "type": "int"
+            },
+            "price": {
+                "type": "double"
+            }
+        }
+    },
+    "myCart": "My Cart",
+    "@myCart": {
+        "description": "Text shown on the cart page"
+    },
+    "yes": "Yes",
+    "@yes": {
+        "description": "Text shown on the button to confirm"
+    },
+    "no": "No",
+    "@no": {
+        "description": "Text shown on the button to cancel"
+    },
+    "deleteProductFromCart": "Delete product from cart?",
+    "@deleteProductFromCart": {
+        "description": "Text shown when a user tries to delete a product from the cart"
+    },
+    "areYouSure": "Are you sure you want to delete {name} from the cart?",
+    "@areYouSure": {
+        "description": "Text shown when a user tries to delete a product from the cart",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "cartEmpty": "Cart is empty. Add products to cart to order.",
+    "@cartEmpty": {
+        "description": "Text shown when the cart is empty"
+    },
+    "orderHistory": "Order History",
+    "@orderHistory": {
+        "description": "Text shown on the order history page"
+    },
+    "orderDetails": "Order Details",
+    "@orderDetails": {
+        "description": "Text shown on the order details page"
+    },
+    "products": "Products",
+    "@products": {
+        "description": "Text shown on the products page"
+    },
+    "myProfile": "My Profile",
+    "@myProfile": {
+        "description": "Text shown on the profile page"
+    },
+    "selectProductCategory": "Select Product Category",
+    "@selectProductCategory": {
+        "description": "Text shown on the product page"
+    },
+    "selectBuyerAddress": "Select a delivery address",
+    "@selectBuyerAddress": {
+        "description": "Text shown on the product page"
+    },
+    "productDetails": "Product Details",
+    "@productDetails": {
+        "description": "Text shown on the product details page"
+    },
+    "enterQuantity": "Enter quantity",
+    "@enterQuantity": {
+        "description": "Text shown on the product details page"
+    },
+    "enterValidQuantity": "Enter a valid quantity",
+    "@enterValidQuantity": {
+        "description": "Text shown on the product details page"
+    },
+    "paymentDetails": "Payment Details",
+    "@paymentDetails": {
+        "description": "Text shown on the payment details page"
+    },
+    "bankName": "Bank Name: {bankName}",
+    "@bankName": {
+        "description": "Shows the bank name on the payment details page",
+        "placeholders": {
+            "bankName": {
+                "type": "String"
+            }
+        }
+    },
+    "accountNumber": "Account Number: {accountNumber}",
+    "@accountNumber": {
+        "description": "Shows the account number on the payment details page",
+        "placeholders": {
+            "accountNumber": {
+                "type": "String"
+            }
+        }
+    },
+    "accountName": "Account Name: {accountName}",
+    "@accountName": {
+        "description": "Shows the account name on the payment details page",
+        "placeholders": {
+            "accountName": {
+                "type": "String"
+            }
+        }
+    },
+    "branch": "Branch: {branch}",
+    "@branch": {
+        "description": "Shows the branch on the payment details page",
+        "placeholders": {
+            "branch": {
+                "type": "String"
+            }
+        }
+    },
+    "bankCode": "Bank Code: {bankCode}",
+    "@bankCode": {
+        "description": "Shows the bank code on the payment details page",
+        "placeholders": {
+            "bankCode": {
+                "type": "String"
+            }
+        }
+    },
+    "branchCode": "Branch Code: {branchCode}",
+    "@branchCode": {
+        "description": "Shows the branch code on the payment details page",
+        "placeholders": {
+            "branchCode": {
+                "type": "String"
+            }
+        }
+    },
+    "paymentReference": "Payment Reference: {paymentReference}",
+    "@paymentReference": {
+        "description": "Shows the payment reference on the payment details page",
+        "placeholders": {
+            "paymentReference": {
+                "type": "String"
+            }
+        }
+    },
+    "paymentAmount": "Payment Amount: {paymentAmount}",
+    "@paymentAmount": {
+        "description": "Shows the payment amount on the payment details page",
+        "placeholders": {
+            "paymentAmount": {
+                "type": "String"
+            }
+        }
+    },
+    "paymentInstructions": "Payment Instructions",
+    "@paymentInstructions": {
+        "description": "Shows the payment instructions on the payment details page"
+    },
+    "selectYourPreferredBank": "Select your preferred bank",
+    "@selectYourPreferredBank": {
+        "description": "Text shown on the product page"
+    },
+    "noOrders": "No orders",
+    "@noOrders": {
+        "description": "Text shown when there are no orders"
+    },
+    "viewProfile": "View Profile",
+    "@viewProfile": {
+        "description": "Text shown on the profile page"
+    },
+    "viewProfileDetails": "Your name, email address and account deletion",
+    "@viewProfileDetails": {
+        "description": "Text shown on the profile page"
+    },
+    "myAccount": "My Account",
+    "@myAccount": {
+        "description": "Text shown on the profile page"
+    },
+    "viewAddressess": "View Addresses",
+    "@viewAddressess": {
+        "description": "Text shown on the profile page"
+    },
+    "viewAddressessDetails": "Set & view your delivery addresses",
+    "@viewAddressessDetails": {
+        "description": "Text shown on the profile page"
+    },
+    "myProducts": "My Products",
+    "@myProducts": {
+        "description": "Text shown on the OMC page when loading products"
+    },
+    "editProduct": "Edit Product",
+    "@editProduct": {
+        "description": "Text shown on title sheet to edit a product for an OMC"
+    },
+    "saveChanges": "Save changes",
+    "@saveChanges": {
+        "description": ""
+    },
+    "savingChanges": "Saving changes",
+    "@savingChanges": {
+        "description": ""
+    },
+    "savedChanges": "Your changes have been saved",
+    "@savedChanges": {
+        "description": ""
+    },
+    "unitPrice": "Unit Price",
+    "@unitPrice": {},
+    "subTotal": "Sub Total",
+    "@subTotal": {},
+    "platformFees": "Platform Fees",
+    "@platformFees": {},
+    "volumeAvailable": "Volume Available",
+    "@volumAvailable": {},
+    "minimumPurchaseableQuantity": "Minimum Purchaseable Quantity",
+    "@minimumPurchaseableQuantity": {},
+    "maximumPurchaseableQuantity": "Maximum Purchaseable Quantity",
+    "@maximumPurchaseableQuantity": {},
+    "noAddressesFound": "No addresses found",
+    "@noAddressesFound": {},
+    "noProductsFound": "No products found",
+    "@noProductsFound": {},
+    "addPetrolStation": "Add Petrol Station",
+    "@addPetrolStation": {
+        "description": "Text shown on the button to add a petrol station"
+    },
+    "documentsUpload": "Documents Upload",
+    "@documentsUpload": {},
+    "documentsUploadDetails": "Upload your documents",
+    "documents": "Upload all the necessary documents",
+    "@documents": {},
+    "@documentsUploadDetails": {},
+    "myAddresses": "My Addresses",
+    "@myAddresses": {},
+    "documentUploaded": "Document uploaded.",
+    "@documentUploaded": {},
+    "documentNotUploaded": "Document not uploaded. Please tap to upload.",
+    "@documentNotUploaded": {},
+    "forgotPassword": "Forgot password? ",
+    "@forgotPassword": {},
+    "dontHaveAnAccount": "Don't have an account? ",
+    "@dontHaveAnAccount": {},
+    "signUp": "Sign up",
+    "@signUp": {},
+    "signingUp": "Signing up ...",
+    "@signingUp": {},
+    "continueButton": "Continue",
+    "@continueButton": {},
+    "alreadyHaveAnAccount": "Already have an account? ",
+    "@alreadyHaveAnAccount": {},
+    "invoices": "Invoices",
+    "@invoices": {},
+    "combinedOrder": "Combined Order",
+    "@combinedOrder": {},
+    "fuelInvoice": "Fuel Invoice",
+    "@fuelInvoice": {},
+    "lpgInvoice": "LPG Invoice",
+    "@lpgInvoice": {},
+    "lubricantsInvoice": "Lubricants Invoice",
+    "@lubricantsInvoice": {},
+    "documentRegulations": "Regulations require you to upload these documents. Don't worry, your data will stay safe and private",
+    "@documentRegulations": {},
+    "noProducts": "No Products",
+    "@noProducts": {}
+    
+}
