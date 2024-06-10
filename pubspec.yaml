@@ -39,7 +39,7 @@ dependencies:
   logger: ^2.3.0
   pretty_dio_logger: ^1.3.1
   url_launcher: ^6.2.6
-  wolt_modal_sheet: ^0.6.0
+  wolt_modal_sheet: ^0.6.1
 
 dev_dependencies:
   auto_route_generator: ^8.0.0
