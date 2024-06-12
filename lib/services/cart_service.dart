@@ -1,16 +1,11 @@
-
 import 'package:shoesly/collections/cart_item.dart';
-import 'package:shoesly/models/encoflow_buyer_address.dart';
-import 'package:shoesly/models/encoflow_product.dart';
-import 'package:shoesly/models/encoflow_transport_profile.dart';
+import 'package:shoesly/models/shoes.dart';
 import 'package:shoesly/services/local_database_service.dart';
 
 abstract class CartService {
   void addToCart({
-    required EncoflowProduct product,
-    required EncoflowBuyerAddress buyerAddress,
-    required EncoflowTransportProfile transportProfile,
-    required double quantity,
+    required ShoesModel cartItem,
+    required int quantity,
   });
   void removeFromCart(int cartItemId);
   void clearCart();
@@ -28,19 +23,25 @@ class CartServiceImpl implements CartService {
 
   @override
   void addToCart({
-    required EncoflowProduct product,
-    required EncoflowBuyerAddress buyerAddress,
-    required EncoflowTransportProfile transportProfile,
-    required double quantity,
+    required ShoesModel cartItem,
+    required int quantity,
   }) {
     _localDatabaseService.insertCartItem(
       CartItem(
-        description: '',
-        image: '',
-        name: '',
-        number: '',
-        price: '',
-
+        size: cartItem.size,
+        uid: cartItem.id,
+        averageRating: cartItem.averageRating,
+        category: cartItem.category,
+        color: cartItem.color,
+        description: cartItem.description,
+        image: cartItem.image,
+        name: cartItem.name,
+        numberOfReviews: cartItem.numberOfReviews,
+        price: cartItem.price,
+        selectableSize: cartItem.selectableSize,
+        topReviews: cartItem.topReviews,
+        totalReviews: cartItem.totalReviews,
+        quantity: quantity,
       ),
     );
   }

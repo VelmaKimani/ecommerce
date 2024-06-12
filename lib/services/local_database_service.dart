@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:isar/isar.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:shoesly/collections/cart_item.dart';
 import 'package:shoesly/utils/singletons.dart';
@@ -29,35 +30,35 @@ class LocalDatabaseServiceImpl implements LocalDatabaseService {
 
   @override
   Future<void> clearAllTables() async {
-    await encoflowDBInstance.writeTxnSync(() async {
-      encoflowDBInstance.clearSync();
+    await shoeslyDBInstance.writeTxnSync(() async {
+      shoeslyDBInstance.clearSync();
     });
   }
 
   @override
   void insertCartItem(CartItem cartItem) {
-    encoflowDBInstance.writeTxnSync(
-      () => encoflowDBInstance.cartItems.putSync(cartItem),
+    shoeslyDBInstance.writeTxnSync(
+      () => shoeslyDBInstance.cartItems.putSync(cartItem),
     );
   }
 
   @override
   void deleteCartItem(int cartItemId) {
-    encoflowDBInstance.writeTxnSync(
-      () => encoflowDBInstance.cartItems.deleteSync(cartItemId),
+    shoeslyDBInstance.writeTxnSync(
+      () => shoeslyDBInstance.cartItems.deleteSync(cartItemId),
     );
   }
 
   @override
   void clearCartItems() {
-    encoflowDBInstance.writeTxnSync(
-      () => encoflowDBInstance.cartItems.clearSync(),
+    shoeslyDBInstance.writeTxnSync(
+      () => shoeslyDBInstance.cartItems.clearSync(),
     );
   }
 
   @override
   Stream<List<CartItem>> cartItems() async* {
-    await for (final cartItem in encoflowDBInstance.cartItems
+    await for (final cartItem in shoeslyDBInstance.cartItems
         .filter()
         .idGreaterThan(0)
         .build()
@@ -68,6 +69,6 @@ class LocalDatabaseServiceImpl implements LocalDatabaseService {
 
   @override
   int getCartCount() {
-    return encoflowDBInstance.cartItems.countSync();
+    return shoeslyDBInstance.cartItems.countSync();
   }
 }

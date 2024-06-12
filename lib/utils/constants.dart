@@ -7,6 +7,7 @@ class ShoeslyValues {
 
   final String urlScheme;
   final String baseDomain;
+
   final String authBox;
 }
 

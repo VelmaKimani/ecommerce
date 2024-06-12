@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shoesly/models/failure.dart';
 import 'package:shoesly/services/hive_service.dart';
+
 import 'package:shoesly/utils/constants.dart';
 
 class NetworkUtil {

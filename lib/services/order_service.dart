@@ -1,67 +1,51 @@
 import 'dart:convert';
 
-import 'package:shoesly/models/encoflow_order.dart';
-import 'package:shoesly/models/encoflow_sasapay_trust_bank.dart';
+import 'package:shoesly/models/shoes_order.dart';
 import 'package:shoesly/utils/network.dart';
 
-
 abstract class OrderService {
-  Future<List<EncoflowOrder>> getOrdersByUser({
-    required String userUlid,
+  Future<List<ShoesOrder>> getOrdersByUser();
+  Future<ShoesOrder> createOrder({
+    required ShoesOrderDTO orderDTO,
   });
-  Future<EncoflowOrder> createOrder({
-    required EncoflowOrderDTO orderDTO,
-  });
-  Future<EncoflowOrder> getOrderDetails({
+  Future<ShoesOrder> getOrderDetails({
     required String orderUlid,
   });
-  Future<List<EncoflowSasapayTrustBank>> getSasapayTrustBanks();
 }
 
 class OrderServiceImpl implements OrderService {
   final _networkUtil = NetworkUtil();
 
   @override
-  Future<List<EncoflowOrder>> getOrdersByUser({
-    required String userUlid,
-  }) async {
+  Future<List<ShoesOrder>> getOrdersByUser() async {
     final response = await _networkUtil.getReq(
       '/orders',
-      queryParameters: {
-        'filter[user_ulid]': userUlid,
-      },
+      queryParameters: {},
     );
 
-    return EncoflowOrderResponse.fromJson(response).data;
+    return ShoesOrderResponse.fromJson(response).data;
   }
 
   @override
-  Future<EncoflowOrder> createOrder({
-    required EncoflowOrderDTO orderDTO,
+  Future<ShoesOrder> createOrder({
+    required ShoesOrderDTO orderDTO,
   }) async {
     final response = await _networkUtil.postReq(
       '/orders',
       body: json.encode(orderDTO.toJson()),
     );
 
-    return EncoflowOrder.fromJson(response['data'] as Map<String, dynamic>);
+    return ShoesOrder.fromJson(response['data'] as Map<String, dynamic>);
   }
 
   @override
-  Future<EncoflowOrder> getOrderDetails({
+  Future<ShoesOrder> getOrderDetails({
     required String orderUlid,
   }) async {
     final response = await _networkUtil.getReq('/orders/$orderUlid');
 
-    return EncoflowOrder.fromJson(
+    return ShoesOrder.fromJson(
       response['data'] as Map<String, dynamic>,
     );
-  }
-
-  @override
-  Future<List<EncoflowSasapayTrustBank>> getSasapayTrustBanks() async {
-    final response = await _networkUtil.getReq('/sasapay-trust-banks');
-
-    return EncoflowSasapayTrustBankResponse.fromJson(response).data;
   }
 }

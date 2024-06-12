@@ -5,20 +5,38 @@ part 'cart_item.g.dart';
 @collection
 class CartItem {
   CartItem({
-    required this.name,
-    required this.image,
+    required this.size,
+    required this.uid,
+    required this.averageRating,
+    required this.category,
+    required this.color,
     required this.description,
+    required this.image,
+    required this.name,
+    required this.numberOfReviews,
     required this.price,
-    required this.number,
+    required this.selectableSize,
+    required this.topReviews,
+    required this.totalReviews,
+    required this.quantity,
   });
 
   Id id = Isar.autoIncrement;
 
-  late String name;
+  late String uid;
   late String image;
-  late String description;
+  late String name;
   late String price;
-  late String number;
+  late String numberOfReviews;
+  late String averageRating;
+  late String category;
+  late String color;
+  late String description;
+  late String selectableSize;
+  late String topReviews;
+  late String totalReviews;
+  late int quantity;
+  late String size;
 
-  int get totalPrice => int.parse(price) * int.parse(number);
+  int get totalPrice => int.parse(price) * quantity;
 }
