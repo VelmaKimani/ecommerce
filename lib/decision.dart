@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shoesly/features/landing/services/hive_service.dart';
+import 'package:shoesly/services/hive_service.dart';
 import 'package:shoesly/utils/constants.dart';
 import 'package:shoesly/utils/router.dart';
 import 'package:shoesly/utils/singletons.dart';
@@ -53,6 +53,7 @@ class _DecisionPageState extends State<DecisionPage> {
 
         if (accToken != null && profile != null) {
           final result =
+              // ignore: inference_failure_on_untyped_parameter
               profile.roles.where((role) => role.name == 'customer').toList();
 
           if (result.isNotEmpty) {

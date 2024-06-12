@@ -9,19 +9,19 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i10;
-import 'package:flutter/material.dart' as _i11;
+import 'package:flutter/material.dart' as _i12;
 import 'package:shoesly/decision.dart' as _i3;
-import 'package:shoesly/features/landing/cart/cart.dart' as _i1;
-import 'package:shoesly/features/landing/checkout/checkout_page.dart' as _i2;
-import 'package:shoesly/features/landing/discover/discover_page.dart' as _i4;
-import 'package:shoesly/features/landing/filter/filter_categories/filter_categories_page.dart'
+import 'package:shoesly/features/cart/cart.dart' as _i1;
+import 'package:shoesly/features/checkout/checkout_page.dart' as _i2;
+import 'package:shoesly/features/discover/discover_page.dart' as _i4;
+import 'package:shoesly/features/filter/filter_categories/filter_categories_page.dart'
     as _i5;
-import 'package:shoesly/features/landing/filter/filter_page.dart' as _i6;
-import 'package:shoesly/features/landing/home/home.dart' as _i7;
-import 'package:shoesly/features/landing/models/shoes.dart' as _i12;
-import 'package:shoesly/features/landing/product_detail/product_detail_page.dart'
+import 'package:shoesly/features/filter/filter_page.dart' as _i6;
+import 'package:shoesly/features/home/home.dart' as _i7;
+import 'package:shoesly/features/product_detail/product_detail_page.dart'
     as _i8;
-import 'package:shoesly/features/landing/reviews/reviews_page.dart' as _i9;
+import 'package:shoesly/features/reviews/reviews_page.dart' as _i9;
+import 'package:shoesly/models/shoes.dart' as _i11;
 
 abstract class $ShoeslyRouter extends _i10.RootStackRouter {
   $ShoeslyRouter({super.navigatorKey});
@@ -57,8 +57,8 @@ abstract class $ShoeslyRouter extends _i10.RootStackRouter {
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i5.FilterCategoriesPage(
-          key: args.key,
           shoes: args.shoes,
+          key: args.key,
         ),
       );
     },
@@ -154,14 +154,14 @@ class DiscoverRoute extends _i10.PageRouteInfo<void> {
 class FilterCategoriesRoute
     extends _i10.PageRouteInfo<FilterCategoriesRouteArgs> {
   FilterCategoriesRoute({
-    _i11.Key? key,
-    required List<_i12.ShoesModel> shoes,
+    required List<_i11.ShoesModel> shoes,
+    _i12.Key? key,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           FilterCategoriesRoute.name,
           args: FilterCategoriesRouteArgs(
-            key: key,
             shoes: shoes,
+            key: key,
           ),
           initialChildren: children,
         );
@@ -174,17 +174,17 @@ class FilterCategoriesRoute
 
 class FilterCategoriesRouteArgs {
   const FilterCategoriesRouteArgs({
-    this.key,
     required this.shoes,
+    this.key,
   });
 
-  final _i11.Key? key;
+  final List<_i11.ShoesModel> shoes;
 
-  final List<_i12.ShoesModel> shoes;
+  final _i12.Key? key;
 
   @override
   String toString() {
-    return 'FilterCategoriesRouteArgs{key: $key, shoes: $shoes}';
+    return 'FilterCategoriesRouteArgs{shoes: $shoes, key: $key}';
   }
 }
 
@@ -220,8 +220,8 @@ class HomeRoute extends _i10.PageRouteInfo<void> {
 /// [_i8.ProductDetailPage]
 class ProductDetailRoute extends _i10.PageRouteInfo<ProductDetailRouteArgs> {
   ProductDetailRoute({
-    required _i12.ShoesModel shoe,
-    _i11.Key? key,
+    required _i11.ShoesModel shoe,
+    _i12.Key? key,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           ProductDetailRoute.name,
@@ -244,9 +244,9 @@ class ProductDetailRouteArgs {
     this.key,
   });
 
-  final _i12.ShoesModel shoe;
+  final _i11.ShoesModel shoe;
 
-  final _i11.Key? key;
+  final _i12.Key? key;
 
   @override
   String toString() {

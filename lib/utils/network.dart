@@ -6,7 +6,7 @@ import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:shoesly/features/landing/models/failure.dart';
+import 'package:shoesly/models/failure.dart';
 
 import 'package:shoesly/utils/constants.dart';
 

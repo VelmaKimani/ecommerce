@@ -7,9 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shoesly/features/landing/services/hive_service.dart';
-
 import 'package:shoesly/firebase_options.dart';
+import 'package:shoesly/services/hive_service.dart';
 import 'package:shoesly/utils/singletons.dart';
 
 class AppBlocObserver extends BlocObserver {
