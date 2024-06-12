@@ -6,8 +6,8 @@ import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:shoesly/models/failure.dart';
-import 'package:shoesly/services/hive_service.dart';
+import 'package:shoesly/features/landing/models/failure.dart';
+
 import 'package:shoesly/utils/constants.dart';
 
 class NetworkUtil {
@@ -31,15 +31,15 @@ class NetworkUtil {
       ),
     );
 
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          options.headers['Authorization'] =
-              'Bearer ${HiveServiceImpl().retrieveToken() ?? ''}';
-          return handler.next(options);
-        },
-      ),
-    );
+    // dio.interceptors.add(
+    //   InterceptorsWrapper(
+    //     onRequest: (options, handler) async {
+    //       options.headers['Authorization'] =
+    //           'Bearer ${HiveServiceImpl().retrieveToken() ?? ''}';
+    //       return handler.next(options);
+    //     },
+    //   ),
+    // );
 
     if (kDebugMode) {
       dio.interceptors.add(

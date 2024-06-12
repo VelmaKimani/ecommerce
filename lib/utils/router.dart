@@ -8,6 +8,7 @@ class ShoeslyRouter extends $ShoeslyRouter {
   static const String discoverRoute = '/discover';
   static const String productDetailRoute = '/product-detail';
   static const String filterRoute = '/filter';
+  static const String filterCategoriesRoute = '/filter-categories';
   static const String reviewsRoute = '/reviews';
   static const String cartRoute = '/cart';
   static const String checkoutRoute = '/checkout';
@@ -19,6 +20,10 @@ class ShoeslyRouter extends $ShoeslyRouter {
         AutoRoute(page: DiscoverRoute.page, path: discoverRoute),
         AutoRoute(page: ProductDetailRoute.page, path: productDetailRoute),
         AutoRoute(page: FilterRoute.page, path: filterRoute),
+        AutoRoute(
+          page: FilterCategoriesRoute.page,
+          path: filterCategoriesRoute,
+        ),
         AutoRoute(page: ReviewsRoute.page, path: reviewsRoute),
         AutoRoute(page: CartRoute.page, path: cartRoute),
         AutoRoute(page: CheckoutRoute.page, path: checkoutRoute),

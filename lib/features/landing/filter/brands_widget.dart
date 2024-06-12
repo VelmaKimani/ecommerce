@@ -32,7 +32,7 @@ class _BrandsWidgetState extends State<BrandsWidget> {
             ),
             child: Image.asset(widget.logo),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 5),
           Text(
             widget.brandName,
             style:
@@ -41,12 +41,13 @@ class _BrandsWidgetState extends State<BrandsWidget> {
                       fontSize: 16,
                     ),
           ),
+          const SizedBox(height: 5),
           Text(
             widget.itemNumber,
             style:
                 CustomTextTheme.customTextTheme(context).labelSmall?.copyWith(
                       // fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontSize: 10,
                       color: Colors.grey,
                     ),
           ),

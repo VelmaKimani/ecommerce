@@ -8,19 +8,19 @@ import 'package:shoesly/features/landing/product_detail/_handset.dart';
 @RoutePage()
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({
-    required this.shoesModel,
+    required this.shoe,
     super.key,
   });
-  final ShoesModel shoesModel;
+  final ShoesModel shoe;
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder: (_, __) => ProductDetailPageHandset(
-        shoesModel: shoesModel,
+        shoe: shoe,
       ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => ProductDetailPageHandset(
-          shoesModel: shoesModel,
+          shoe: shoe,
         ),
       ),
     );

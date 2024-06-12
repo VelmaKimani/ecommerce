@@ -1,58 +1,54 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:freezed_annotation/freezed_annotation.dart';
-// import 'package:shoesly/collections/cart_item.dart';
-// import 'package:shoesly/models/encoflow_order.dart';
-// import 'package:shoesly/services/cart_service.dart';
-// import 'package:shoesly/services/hive_service.dart';
-// import 'package:shoesly/services/order_service.dart';
+import 'package:bloc/bloc.dart';
 
-// part 'confirm_order_cubit.freezed.dart';
-// part 'confirm_order_state.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shoesly/features/landing/collections/cart_item.dart';
+import 'package:shoesly/features/landing/models/shoes_order.dart';
+import 'package:shoesly/features/landing/services/cart_service.dart';
+import 'package:shoesly/features/landing/services/order_service.dart';
 
-// class ConfirmOrderCubit extends Cubit<ConfirmOrderState> {
-//   ConfirmOrderCubit({
-//     required HiveService hiveService,
-//     required OrderService orderService,
-//     required CartService cartService,
-//   }) : super(const ConfirmOrderState.initial()) {
-//     _hiveService = hiveService;
-//     _orderService = orderService;
-//     _cartService = cartService;
-//   }
+part 'confirm_order_state.dart';
+part 'confirm_order_cubit.freezed.dart';
 
-//   late HiveService _hiveService;
-//   late OrderService _orderService;
-//   late CartService _cartService;
+class ConfirmOrderCubit extends Cubit<ConfirmOrderState> {
+  ConfirmOrderCubit({
+    required OrderService orderService,
+    required CartService cartService,
+  }) : super(const ConfirmOrderState.initial()) {
+    _orderService = orderService;
+    _cartService = cartService;
+  }
 
-//   Future<void> confirmOrder({
-//     required List<CartItem> cartItems,
-//   }) async {
-//     emit(const ConfirmOrderState.loading());
+  late OrderService _orderService;
+  late CartService _cartService;
 
-//     try {
-//       final profile = _hiveService.retrieveProfile()!;
+  Future<void> confirmOrder({
+    required List<CartItem> cartItems,
+  }) async {
+    emit(const ConfirmOrderState.loading());
 
-//       final order = await _orderService.createOrder(
-//         orderDTO: EncoflowOrderDTO(
-//           userUlid: profile.ulid,
-//           orderItems: cartItems
-//               .map(
-//                 (cartItem) => EncoflowOrderItemDTO(
-//                   productUlid: cartItem.productUlid,
-//                   volumeNeeded: cartItem.volumeNeeded,
-//                   buyerAddressUlid: cartItem.buyerAddressId,
-//                   transportProfileUlid: cartItem.transportProfileId,
-//                 ),
-//               )
-//               .toList(),
-//         ),
-//       );
+    try {
 
-//       _cartService.clearCart();
+      final order = await _orderService.createOrder(
+        orderDTO: ShoesOrderDTO(
+          orderItems: cartItems
+              .map(
+                (cartItem) => ShoesOrderItemDTO(
+                  image: cartItem.image,
+                  name: cartItem.name,
+                  description: cartItem.description,
+                  price: cartItem.price,
+                  quantity: cartItem.quantity.toString(),
+                ),
+              )
+              .toList(),
+        ),
+      );
 
-//       emit(ConfirmOrderState.loaded(order: order));
-//     } catch (e) {
-//       emit(ConfirmOrderState.error(e.toString()));
-//     }
-//   }
-// }
+      _cartService.clearCart();
+
+      emit(ConfirmOrderState.loaded(order: order));
+    } catch (e) {
+      emit(ConfirmOrderState.error(e.toString()));
+    }
+  }
+}

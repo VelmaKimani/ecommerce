@@ -12,9 +12,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const HomePageHandset(),
+      defaultBuilder: (_, __) => HomePageHandset(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const HomePageHandset(),
+        handset: (_, __) => HomePageHandset(),
       ),
     );
   }

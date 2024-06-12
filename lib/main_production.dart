@@ -11,8 +11,8 @@ Future<void> main() async {
 
   ShoeslyConfig(
     values: ShoeslyValues(
-      baseDomain: 'api.encoflowtrading.com',
-      authBox: 'encoflow_auth',
+      baseDomain: '',
+      authBox: 'shoesly_auth',
       urlScheme: 'https',
     ),
   );

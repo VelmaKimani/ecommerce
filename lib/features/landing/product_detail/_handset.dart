@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,10 +11,10 @@ import 'package:shoesly/utils/router.dart';
 
 class ProductDetailPageHandset extends StatefulWidget {
   const ProductDetailPageHandset({
-    required this.shoesModel,
+    required this.shoe,
     super.key,
   });
-  final ShoesModel shoesModel;
+  final ShoesModel shoe;
 
   @override
   State<ProductDetailPageHandset> createState() =>
@@ -23,7 +22,7 @@ class ProductDetailPageHandset extends StatefulWidget {
 }
 
 class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
-  ShoesModel get shoesModel => widget.shoesModel;
+  ShoesModel get shoesModel => widget.shoe;
 
   int _rating = 0;
 
@@ -39,6 +38,25 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
           Icon(
             Icons.star,
             color: index < _rating ? Colors.yellow : Colors.grey,
+            size: 14,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _reviewBuildStar(int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _rating = index + 1;
+        });
+      },
+      child: Row(
+        children: [
+          Icon(
+            Icons.star,
+            color: Colors.yellow,
             size: 14,
           ),
         ],
@@ -108,8 +126,13 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                               Icons.arrow_back_sharp,
                             ),
                           ),
-                          Image.asset(
-                            'assets/icons/bag-2.png',
+                          GestureDetector(
+                            onTap: () => context.router.pushNamed(
+                              ShoeslyRouter.cartRoute,
+                            ),
+                            child: Image.asset(
+                              'assets/icons/bag-2.png',
+                            ),
                           ),
                         ],
                       ),
@@ -128,7 +151,7 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                                 // ),
 
                                 Image.network(
-                              widget.shoesModel.image,
+                              widget.shoe.image,
                               //fit: BoxFit.fill,
                             ),
                           ),
@@ -136,7 +159,7 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        widget.shoesModel.name,
+                        widget.shoe.name,
                         style: CustomTextTheme.customTextTheme(context)
                             .displayLarge
                             ?.copyWith(
@@ -154,12 +177,12 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            widget.shoesModel.averageRating,
+                            widget.shoe.averageRating,
                             style: const TextStyle(fontSize: 18),
                           ),
                           Text(
-                            widget.shoesModel.numberOfReviews,
-                            style: TextStyle(fontSize: 18),
+                            widget.shoe.numberOfReviews,
+                            style: const TextStyle(fontSize: 18),
                           ),
                         ],
                       ),
@@ -177,13 +200,13 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                         scrollDirection: Axis.horizontal,
                         child: Wrap(
                           children: List.generate(
-                            ((42 - 39) / 0.5).round() + 1,
+                            ((41 - 39) / 0.5).round() + 1,
                             (index) => _buildNumberButton(39 + index * 0.5),
                           ),
                         ),
                       ),
                       Text(
-                        widget.shoesModel.description,
+                        widget.shoe.description,
                         style: CustomTextTheme.customTextTheme(context)
                             .displayLarge
                             ?.copyWith(
@@ -192,12 +215,12 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                             ),
                       ),
                       Text(
-                        widget.shoesModel.description,
+                        widget.shoe.description,
                         // "Engineered to crush any movement-based workout, these On sneakers enhance the label's original Cloud sneaker with cutting edge technologies for a pair.",
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Reviews(${reviews.length.toString()})',
+                        'Reviews(${reviews.length})',
                         style: CustomTextTheme.customTextTheme(context)
                             .displayLarge
                             ?.copyWith(
@@ -250,7 +273,7 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                                             reviews[i].name,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -266,7 +289,7 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                                                 int.parse(
                                                   reviews[i].numberOfStars,
                                                 ),
-                                                _buildStar,
+                                                _reviewBuildStar,
                                               ),
                                             ),
                                           ],
@@ -348,7 +371,7 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                               ),
                             ],
                           ),
-                          const AddToCartWidget(),
+                          AddToCartWidget(shoes: widget.shoe),
                         ],
                       ),
                     ],

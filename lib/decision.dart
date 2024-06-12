@@ -2,9 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import 'package:shoesly/services/hive_service.dart';
-import 'package:shoesly/utils/_index.dart';
+import 'package:shoesly/features/landing/services/hive_service.dart';
+import 'package:shoesly/utils/constants.dart';
+import 'package:shoesly/utils/router.dart';
+import 'package:shoesly/utils/singletons.dart';
 
 @RoutePage()
 class DecisionPage extends StatefulWidget {
@@ -55,14 +56,14 @@ class _DecisionPageState extends State<DecisionPage> {
               profile.roles.where((role) => role.name == 'customer').toList();
 
           if (result.isNotEmpty) {
-            _redirectToPage(context, ShoeslyRouter.homeRoute);
+            _redirectToPage(context, ShoeslyRouter.discoverRoute);
           } else {
-            _redirectToPage(context, ShoeslyRouter.homeRoute);
+            _redirectToPage(context, ShoeslyRouter.discoverRoute);
           }
         }
 
         if (accToken == null || profile == null) {
-          _redirectToPage(context, ShoeslyRouter.homeRoute);
+          _redirectToPage(context, ShoeslyRouter.discoverRoute);
         }
 
         return const Scaffold(

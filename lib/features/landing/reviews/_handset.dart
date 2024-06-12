@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoesly/features/landing/models/reviews.dart';
+import 'package:shoesly/features/landing/models/shoes.dart';
 import 'package:shoesly/features/landing/reviews/cubit/reviews_cubit.dart';
 import 'package:shoesly/utils/_index.dart';
 
@@ -11,16 +14,53 @@ class ReviewsPageHandset extends StatefulWidget {
 }
 
 class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
-  String selectedCategory = 'All';
+  String _selectedCategory = 'All';
+  final List<String> _categories = [
+    'All',
+    '5',
+    '4',
+    '3',
+    '2',
+    '1',
+  ];
+  late Stream<List<ReviewsModel>> _reviewsStream;
 
-  final Map<String, List<String>> items = {
-    'All': ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-    '5 Stars': ['Nike Item 1', 'Nike Item 2'],
-    '4 Stars': ['Jordan Item 1', 'Jordan Item 2'],
-    '3 Stars': ['Adidas Item 1', 'Adidas Item 2'],
-    '2 Stars': ['Reebok Item 1', 'Reebok Item 2'],
-    '1 Star': [''],
-  };
+  @override
+  void initState() {
+    super.initState();
+    _reviewsStream = _getReviewsStream();
+    context.read<ReviewsCubit>().getAllReviews();
+  }
+
+  Stream<List<ReviewsModel>> _getReviewsStream() {
+    return FirebaseFirestore.instance
+        .collection('Reviews')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return ReviewsModel.fromMap(doc.data(), doc.id);
+      }).toList();
+    });
+  }
+
+  void _filterByCategory(String category) {
+    setState(() {
+      _selectedCategory = category;
+      if (category == 'All') {
+        _reviewsStream = _getReviewsStream();
+      } else {
+        _reviewsStream = FirebaseFirestore.instance
+            .collection('Reviews')
+            .where('NumberOfStars', isEqualTo: category)
+            .snapshots()
+            .map((snapshot) {
+          return snapshot.docs.map((doc) {
+            return ReviewsModel.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
+      }
+    });
+  }
 
   int _rating = 0;
 
@@ -31,22 +71,16 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
           _rating = index + 1;
         });
       },
-      child: Row(
+      child: const Row(
         children: [
           Icon(
             Icons.star,
-            color: index < _rating ? Colors.yellow : Colors.grey,
+            color: Colors.yellow,
             size: 14,
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void initState() {
-    context.read<ReviewsCubit>().getAllReviews();
-    super.initState();
   }
 
   @override
@@ -106,112 +140,146 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 50,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            'All',
-                            '5 Stars',
-                            '4 Stars',
-                            '3 Stars',
-                            '2 Stars',
-                            '1 Star',
-                          ].map((category) {
-                            return TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedCategory = category;
-                                });
-                              },
-                              child: Text(
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: _categories.map((category) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: ChoiceChip(
+                              label: Text(
                                 category,
                                 style: TextStyle(
-                                  color: selectedCategory == category
+                                  color: _selectedCategory == category
                                       ? Colors.black
                                       : Colors.grey,
                                   fontSize: 18,
                                 ),
                               ),
-                            );
-                          }).toList(),
-                        ),
+                              selected: _selectedCategory == category,
+                              onSelected: (selected) {
+                                _filterByCategory(category);
+                              },
+                              selectedColor: Colors.grey,
+                              disabledColor: Colors.grey[300],
+                              backgroundColor: Colors.grey[200],
+                              labelStyle: TextStyle(
+                                color: _selectedCategory == category
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.82,
-                      child: ListView.builder(
-                        itemCount: reviews.length,
-                        itemBuilder: (context, i) {
-                          return SizedBox(
-                            height: 115,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    
-                                    ),
-                                    child: ClipOval(
-                                      child: Image.network(
-                                        reviews[i].image,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 5,
-                                    right: 5,
-                                    top: 10,
-                                  ),
-                                  child: Column(
+                    Expanded(
+                      child: StreamBuilder<List<ReviewsModel>>(
+                        stream: _reviewsStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return const Center(
+                              child: Text('No reviews found'),
+                            );
+                          }
+                          return ListView(
+                            children: snapshot.data!.map(
+                              (review) {
+                                return SizedBox(
+                                  height: 115,
+                                  child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(
-                                        height: 25,
-                                        width: 230,
-                                        child: Text(
-                                          reviews[i].name,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700,
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: ClipOval(
+                                            child: Image.network(
+                                              review.image,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 5),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: List.generate(
-                                              int.parse(
-                                                reviews[i].numberOfStars,
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 5,
+                                          right: 5,
+                                          top: 10,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              height: 25,
+                                              width: 230,
+                                              child: Text(
+                                                review.name,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
-                                              _buildStar,
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 5),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: List.generate(
+                                                    int.parse(
+                                                      review.numberOfStars,
+                                                    ),
+                                                    _buildStar,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 3),
+                                            SizedBox(
+                                              height: 45,
+                                              width: 230,
+                                              child: Text(
+                                                review.description,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey.shade700,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const SizedBox(height: 3),
-                                      SizedBox(
-                                        height: 45,
-                                        width: 230,
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8),
                                         child: Text(
-                                          reviews[i].description,
-                                          maxLines: 2,
+                                          review.date,
+                                          maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -221,21 +289,9 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
                                       ),
                                     ],
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    reviews[i].date,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade700,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                );
+                              },
+                            ).toList(),
                           );
                         },
                       ),

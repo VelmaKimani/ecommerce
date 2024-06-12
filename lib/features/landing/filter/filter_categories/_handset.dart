@@ -1,27 +1,32 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'package:shoesly/features/landing/models/shoes.dart';
-import 'package:shoesly/features/landing/widgets/primary_button.dart';
 import 'package:shoesly/utils/_index.dart';
 import 'package:shoesly/utils/router.gr.dart';
-import 'package:shoesly/widgets/primary_button.dart';
 
-class DiscoverPageHandset extends StatefulWidget {
-  const DiscoverPageHandset({super.key});
+class FilterCategoriesPageHandset extends StatefulWidget {
+  const FilterCategoriesPageHandset({
+    Key? key,
+    required this.shoes,
+  }) : super(key: key);
 
+  final List<ShoesModel> shoes;
   @override
-  _DiscoverPageHandsetState createState() => _DiscoverPageHandsetState();
+  State<FilterCategoriesPageHandset> createState() =>
+      _FilterCategoriesPageHandsetState();
 }
 
-class _DiscoverPageHandsetState extends State<DiscoverPageHandset> {
-  String _selectedCategory = 'All';
+class _FilterCategoriesPageHandsetState
+    extends State<FilterCategoriesPageHandset> {
+  List<ShoesModel> get shoes => widget.shoes;
+  String _selectedCategory = 'Most Recent';
   final List<String> _categories = [
-    'All',
-    'Nike',
-    'Jordan',
-    'Adidas',
-    'Reebok',
+    'Most Recent',
+    'Last Week',
+    'Last Month',
   ];
   late Stream<List<ShoesModel>> _shoesStream;
 
@@ -42,25 +47,6 @@ class _DiscoverPageHandsetState extends State<DiscoverPageHandset> {
     });
   }
 
-  void _filterByCategory(String category) {
-    setState(() {
-      _selectedCategory = category;
-      if (category == 'All') {
-        _shoesStream = _getShoesStream();
-      } else {
-        _shoesStream = FirebaseFirestore.instance
-            .collection('Shoes')
-            .where('Category', isEqualTo: category)
-            .snapshots()
-            .map((snapshot) {
-          return snapshot.docs.map((doc) {
-            return ShoesModel.fromMap(doc.data(), doc.id);
-          }).toList();
-        });
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
@@ -69,73 +55,37 @@ class _DiscoverPageHandsetState extends State<DiscoverPageHandset> {
       mainAxisExtent: 225,
       crossAxisSpacing: 20,
     );
-
     return Scaffold(
       backgroundColor: AppTheme.appTheme().kBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_sharp,
+                    ),
+                  ),
+                  const SizedBox(width: 50),
                   Text(
-                    'Discover',
+                    'Filtered Categories',
                     style: CustomTextTheme.customTextTheme(context)
                         .displayLarge
                         ?.copyWith(
                           fontWeight: FontWeight.w600,
-                          fontSize: 24,
+                          fontSize: 20,
                         ),
-                  ),
-                  GestureDetector(
-                    onTap: () => context.router.pushNamed(
-                      ShoeslyRouter.cartRoute,
-                    ),
-                    child: Image.asset(
-                      'assets/icons/bag-1.png',
-                    ),
                   ),
                 ],
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: _categories.map((category) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 10, bottom: 10),
-                      child: ChoiceChip(
-                        label: Text(
-                          category,
-                          style: TextStyle(
-                            color: _selectedCategory == category
-                                ? Colors.black
-                                : Colors.grey,
-                            fontSize: 16,
-                          ),
-                        ),
-                        selected: _selectedCategory == category,
-                        onSelected: (selected) {
-                          _filterByCategory(category);
-                        },
-                        selectedColor: Colors.grey,
-                        disabledColor: Colors.grey[300],
-                        backgroundColor: Colors.grey[200],
-                        labelStyle: TextStyle(
-                          color: _selectedCategory == category
-                              ? Colors.black
-                              : Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
+              const SizedBox(height: 10),
               Expanded(
                 child: StreamBuilder<List<ShoesModel>>(
                   stream: _shoesStream,
@@ -243,28 +193,6 @@ class _DiscoverPageHandsetState extends State<DiscoverPageHandset> {
                       }).toList(),
                     );
                   },
-                ),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                ),
-                onPressed: () =>
-                    context.router.pushNamed(ShoeslyRouter.filterRoute),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      'assets/icons/filter.png',
-                      width: 24,
-                      height: 24,
-                    ),
-                    const SizedBox(width: 8),
-                    const Text('Filter'),
-                  ],
                 ),
               ),
             ],

@@ -5,10 +5,10 @@ class TextButtonWidget extends StatefulWidget {
     Key? key,
     required this.buttonText,
     required this.onPressed,
-  }) : super(key: key);
+  }) : assert(buttonText.length == onPressed.length);
 
-  final String buttonText;
-  final VoidCallback onPressed;
+  final List<String> buttonText;
+  final List<VoidCallback> onPressed;
   String? color;
   @override
   @override
@@ -17,55 +17,39 @@ class TextButtonWidget extends StatefulWidget {
 
 class _TextButtonWidgetState extends State<TextButtonWidget> {
   bool isSelected = false;
-  double _selectedNumber = 0;
-
-  Widget _buildNumberButton(double number) {
-    final isSelected = _selectedNumber == number;
-
-    return OutlinedButton(
-      onPressed: () {
-        setState(() {
-          _selectedNumber = number;
-        });
-      },
-      style: OutlinedButton.styleFrom(
-        backgroundColor: isSelected ? Colors.black : Colors.white,
-        shape: const CircleBorder(),
-        side: const BorderSide(color: Colors.grey),
-      ),
-      child: Text(
-        number.toStringAsFixed(1),
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.grey,
-        ),
-      ),
-    );
-  }
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
-      child: ElevatedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: isSelected ? Colors.black : Colors.white,
-          side: const BorderSide(color: Colors.grey),
-        ),
-        onPressed: () {
-          widget.onPressed;
-        },
-        child: Text(
-          widget.buttonText,
-          style: const TextStyle(
-            color: Colors.black,
-          ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(
+          widget.buttonText.length,
+          (index) {
+            return Padding(
+              padding: const EdgeInsets.all(8),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor:
+                      _selectedIndex == index ? Colors.white : Colors.black,
+                  backgroundColor:
+                      _selectedIndex == index ? Colors.black : Colors.white,
+                  side: const BorderSide(color: Colors.grey),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                  widget.onPressed[index]();
+                },
+                child: Text(widget.buttonText[index]),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 }
-
-
-
-
-

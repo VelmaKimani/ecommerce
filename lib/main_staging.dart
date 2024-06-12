@@ -9,13 +9,13 @@ import 'package:shoesly/utils/_index.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-   // ShoeslyConfig(
-  //   values: ShoeslyValues(
-  //     baseDomain: '',
-  //     authBox: '',
-  //     urlScheme: 'https',
-  //   ),
-  // );
+   ShoeslyConfig(
+    values: ShoeslyValues(
+      baseDomain: '',
+      authBox: '',
+      urlScheme: 'https',
+    ),
+  );
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
