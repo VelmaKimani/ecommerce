@@ -232,7 +232,7 @@ class _DiscoverPageHandsetState extends State<DiscoverPageHandset> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                shoe.price,
+                                '\$${shoe.price}',
                                 maxLines: 1,
                                 style: const TextStyle(
                                   fontSize: 14,

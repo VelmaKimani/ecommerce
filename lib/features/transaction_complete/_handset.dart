@@ -1,24 +1,21 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
-import 'package:shoesly/models/shoes.dart';
 
-@RoutePage()
+import 'package:flutter/material.dart';
+
 class TransactionCompletePageHandset extends StatelessWidget {
-  const TransactionCompletePageHandset({
-    required this.shoe,
-    super.key,
-  });
-  final ShoesModel shoe;
+  const TransactionCompletePageHandset({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return AdaptiveBuilder(
-      defaultBuilder: (_, __) => TransactionCompletePageHandset(
-        shoe: shoe,
-      ),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => TransactionCompletePageHandset(
-          shoe: shoe,
+    return const Scaffold(
+      body: Center(
+        child: Card(
+          child: Column(
+            children: [
+              Icon(Icons.check),
+              SizedBox(height: 30),
+              Text('Transaction Complete'),
+            ],
+          ),
         ),
       ),
     );
