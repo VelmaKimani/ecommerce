@@ -183,4 +183,26 @@ Alternatively, run `flutter run` and code generation will take place automatical
 
 
 ### Assumptions Made
-1. 
+1. The payment is successful
+
+2. All shoes have the same number of reviews
+
+3. Total number of shoes to purchase are 15.
+
+4. There are 5 shoes for men.
+
+5. There are 5 shoes for women.
+
+6. There are 5 unisex shoes.
+
+7. Total number of reviews is 10.
+
+
+### Challenges
+1. Filtering the shoes based on gender, most recent and color and displaying them accirdingly.
+
+  Overcame by filtering them separately and displaying them on a new screen with a detailed explanation of what category of shoes the screen is showing.
+
+2. Adding items to cart.
+
+  Overcame by taking a cart item as a separate object with its own model. From this model I am able to display cart items and convert them into an order that warrants payment.
