@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:shoesly/models/shoes_order.dart';
 import 'package:shoesly/utils/network.dart';
 
-
 abstract class OrderService {
   Future<List<ShoesOrder>> getOrdersByUser();
   Future<ShoesOrder> createOrder({
@@ -21,8 +20,7 @@ class OrderServiceImpl implements OrderService {
   Future<List<ShoesOrder>> getOrdersByUser() async {
     final response = await _networkUtil.getReq(
       '/orders',
-      queryParameters: {
-      },
+      queryParameters: {},
     );
 
     return ShoesOrderResponse.fromJson(response).data;

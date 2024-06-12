@@ -1,6 +1,5 @@
 part of 'add_cart_cubit.dart';
 
-
 @freezed
 class AddCartState with _$AddCartState {
   const factory AddCartState.initial() = _Initial;

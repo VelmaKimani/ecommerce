@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:shoesly/models/shoes.dart';
 import 'package:shoesly/services/cart_service.dart';
 
@@ -25,6 +26,7 @@ class AddCartCubit extends Cubit<AddCartState> {
       final CollectionReference collectionReference =
           FirebaseFirestore.instance.collection('Cart');
 
+      // ignore: unused_element
       void addData() {
         collectionReference.add({
           'Id': shoeCart.id,
@@ -42,12 +44,14 @@ class AddCartCubit extends Cubit<AddCartState> {
           'Recency': shoeCart.recency,
           'Gender': shoeCart.gender,
         }).then((value) {
-          print("Data Added");
+          Logger().i('Data Added');
+          // ignore: inference_failure_on_untyped_parameter
         }).catchError((error) {
-          print("Failed to add data: $error");
+          Logger().i('Failed to add data: $error');
         });
       }
-_cartService.clearCart();
+
+      _cartService.clearCart();
       emit(AddCartState.loaded(cartItem: shoeCart));
     } catch (e) {
       emit(AddCartState.error(e.toString()));

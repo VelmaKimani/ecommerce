@@ -5,11 +5,10 @@ part 'auth.g.dart';
 @freezed
 class ShoeslyUser with _$ShoeslyUser {
   factory ShoeslyUser({
-     required String ulid,
+    required String ulid,
     required String name,
     required String email,
     required List<ShoeslyRole> roles,
-  
   }) = _ShoeslyUser;
 
   factory ShoeslyUser.fromJson(Map<String, dynamic> json) =>

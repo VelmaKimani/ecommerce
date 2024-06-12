@@ -1,8 +1,9 @@
+// ignore_for_file: lines_longer_than_80_chars, unused_field, unused_local_variable
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shoesly/features/filter/brands_widget.dart';
-import 'package:shoesly/features/filter/filter_categories/filter_categories_page.dart';
 import 'package:shoesly/models/shoes.dart';
 import 'package:shoesly/utils/_index.dart';
 import 'package:shoesly/utils/router.gr.dart';
@@ -16,6 +17,7 @@ class FilterPageHandset extends StatefulWidget {
 
 class _FilterPageHandsetState extends State<FilterPageHandset> {
   String _selectedCategory = '';
+  RangeValues _currentRangeValues = const RangeValues(100, 500);
   final List<String> _recentCategories = [
     'Most Recent',
     'Lowest Price',
@@ -135,13 +137,6 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
     });
   }
 
-  bool _isListViewVisible = false;
-  void _toggleListView() {
-    setState(() {
-      _isListViewVisible = !_isListViewVisible;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
@@ -221,6 +216,42 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
               ),
               const SizedBox(height: 20),
               Text(
+                ' Price Range',
+                style: CustomTextTheme.customTextTheme(context)
+                    .displayMedium
+                    ?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+              ),
+              RangeSlider(
+                values: _currentRangeValues,
+                max: 1000,
+                divisions: 100,
+                labels: RangeLabels(
+                  _currentRangeValues.start.round().toString(),
+                  _currentRangeValues.end.round().toString(),
+                ),
+                onChanged: (RangeValues values) {
+                  setState(() {
+                    _currentRangeValues = values;
+                  });
+                },
+                activeColor: AppTheme.appTheme().kBlackColor,
+                inactiveColor: AppTheme.appTheme().kGreyColor,
+              ),
+              Center(
+                child: Text(
+                  '\$${_currentRangeValues.start.round()} - \$${_currentRangeValues.end.round()}',
+                  style: CustomTextTheme.customTextTheme(context)
+                      .displayMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                ),
+              ),
+              Text(
                 'Sort By',
                 style: CustomTextTheme.customTextTheme(context)
                     .displayMedium
@@ -236,38 +267,46 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                   children: _recentCategories.map((category) {
                     return Padding(
                       padding: const EdgeInsets.only(right: 10, bottom: 10),
-                      child: ChoiceChip(
-                        showCheckmark: false,
-                        label: Text(
-                          category,
-                          style: TextStyle(
+                      child: GestureDetector(
+                        onTap: () => context.router.push(
+                          FilterRecencyRoute(
+                            category: category,
+                          ),
+                        ),
+                        child: ChoiceChip(
+                          showCheckmark: false,
+                          label: Text(
+                            category,
+                            style: TextStyle(
+                              color: _selectedCategory == category
+                                  ? AppTheme.appTheme().kWhiteColor
+                                  : AppTheme.appTheme().kBlackColor,
+                              fontSize: 16,
+                            ),
+                          ),
+                          selected: _selectedCategory == category,
+                          onSelected: (selected) {
+                            _filterByRecency(category);
+                            context.router.push(
+                              FilterRecencyRoute(
+                                category: category,
+                              ),
+                            );
+                          },
+                          selectedColor: AppTheme.appTheme().kBlackColor,
+                          backgroundColor: AppTheme.appTheme().kWhiteColor,
+                          labelStyle: TextStyle(
                             color: _selectedCategory == category
-                                ? Colors.white
-                                : Colors.black,
-                            fontSize: 16,
+                                ? AppTheme.appTheme().kBlackColor
+                                : AppTheme.appTheme().kWhiteColor,
+                            fontWeight: FontWeight.w400,
                           ),
-                        ),
-                        selected: _selectedCategory == category,
-                        onSelected: (selected) {
-                          _filterByRecency(category);
-                          _isListViewVisible = true;
-                          // context.router.push(
-                          //   const FilterCategoriesRoute(),
-                          // );
-                        },
-                        selectedColor: Colors.black,
-                        backgroundColor: Colors.white,
-                        labelStyle: TextStyle(
-                          color: _selectedCategory == category
-                              ? Colors.black
-                              : Colors.white,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.grey[300]!,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.grey[300]!,
+                            ),
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
                     );
@@ -275,120 +314,6 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                 ),
               ),
               const SizedBox(height: 10),
-              if (_isListViewVisible)
-                Expanded(
-                  child: StreamBuilder<List<ShoesModel>>(
-                    stream: _recentShoesStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
-                          child: Text('No shoes found'),
-                        );
-                      }
-                      return Expanded(
-                        child: FilterCategoriesPage(shoes: snapshot.data!),
-                      );
-
-                      // GridView(
-                      //   gridDelegate: gridDelegate,
-                      //   children: snapshot.data!.map((shoe) {
-                      //     return SizedBox(
-                      //       height: 225,
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           ClipRRect(
-                      //             borderRadius: BorderRadius.circular(20),
-                      //             child: GestureDetector(
-                      //               onTap: () => context.router.push(
-                      //                 ProductDetailRoute(
-                      //                   shoe: shoe,
-                      //                 ),
-                      //               ),
-                      //               child: Container(
-                      //                 color: Colors.black12,
-                      //                 height: 140,
-                      //                 width: 170,
-                      //                 child:
-                      //                     //  SvgPicture.asset(
-                      //                     //   'assets/images/shoe1.svg',
-                      //                     // ),
-
-                      //                     Image.network(
-                      //                   shoe.image,
-                      //                   // 'assets/images/shoe1.png',
-                      //                   fit: BoxFit.scaleDown,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           Padding(
-                      //             padding: const EdgeInsets.only(
-                      //               top: 8,
-                      //             ),
-                      //             child: Text(
-                      //               shoe.name,
-                      //               maxLines: 1,
-                      //               style: const TextStyle(
-                      //                 fontSize: 14,
-                      //                 fontWeight: FontWeight.w500,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           const SizedBox(height: 2),
-                      //           Row(
-                      //             children: [
-                      //               Row(
-                      //                 children: [
-                      //                   GestureDetector(
-                      //                     child: const Icon(
-                      //                       Icons.star, color: Colors.amber,
-                      //                       size: 13.33,
-                      //                     ),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //               const SizedBox(width: 2),
-                      //               Text(
-                      //                 shoe.averageRating,
-                      //                 style: TextStyle(
-                      //                   fontSize: 12,
-                      //                   color: AppTheme.appTheme().kBlackColor,
-                      //                   fontWeight: FontWeight.w500,
-                      //                 ),
-                      //               ),
-                      //               const Text(
-                      //                 '(10 Reviews)',
-                      //                 style: TextStyle(
-                      //                   fontSize: 12,
-                      //                   color: Colors.grey,
-                      //                   fontWeight: FontWeight.w500,
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //           const SizedBox(height: 2),
-                      //           Text(
-                      //             shoe.price,
-                      //             maxLines: 1,
-                      //             style: const TextStyle(
-                      //               fontSize: 14,
-                      //               fontWeight: FontWeight.w500,
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     );
-                      //   }).toList(),
-                      // );
-                    },
-                  ),
-                ),
               Text(
                 'Gender',
                 style: CustomTextTheme.customTextTheme(context)
@@ -411,25 +336,26 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                           category,
                           style: TextStyle(
                             color: _selectedCategory == category
-                                ? Colors.white
-                                : Colors.black,
+                                ? AppTheme.appTheme().kWhiteColor
+                                : AppTheme.appTheme().kBlackColor,
                             fontSize: 16,
                           ),
                         ),
                         selected: _selectedCategory == category,
                         onSelected: (selected) {
                           _filterByGender(category);
-                          _isListViewVisible = true;
-                          // context.router.push(
-                          //   const FilterCategoriesRoute(),
-                          // );
+                          context.router.push(
+                            FilterGenderRoute(
+                              category: category,
+                            ),
+                          );
                         },
-                        selectedColor: Colors.black,
-                        backgroundColor: Colors.white,
+                        selectedColor: AppTheme.appTheme().kBlackColor,
+                        backgroundColor: AppTheme.appTheme().kWhiteColor,
                         labelStyle: TextStyle(
                           color: _selectedCategory == category
-                              ? Colors.black
-                              : Colors.white,
+                              ? AppTheme.appTheme().kBlackColor
+                              : AppTheme.appTheme().kWhiteColor,
                           fontWeight: FontWeight.w400,
                         ),
                         shape: RoundedRectangleBorder(
@@ -444,116 +370,6 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                 ),
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: StreamBuilder<List<ShoesModel>>(
-                  stream: _genderShoesStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No shoes found'),
-                      );
-                    }
-                    return GridView(
-                      gridDelegate: gridDelegate,
-                      children: snapshot.data!.map((shoe) {
-                        return SizedBox(
-                          height: 225,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: GestureDetector(
-                                  onTap: () => context.router.push(
-                                    ProductDetailRoute(
-                                      shoe: shoe,
-                                    ),
-                                  ),
-                                  child: Container(
-                                    color: Colors.white,
-                                    height: 140,
-                                    width: 170,
-                                    child:
-                                        //  SvgPicture.asset(
-                                        //   'assets/images/shoe1.svg',
-                                        // ),
-
-                                        Image.network(
-                                      shoe.image,
-                                      // 'assets/images/shoe1.png',
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                ),
-                                child: Text(
-                                  shoe.name,
-                                  maxLines: 1,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        child: const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                          size: 13.33,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 2),
-                                  Text(
-                                    shoe.averageRating,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: AppTheme.appTheme().kBlackColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const Text(
-                                    '(10 Reviews)',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                shoe.price,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
-              ),
               Text(
                 'Color',
                 style: CustomTextTheme.customTextTheme(context)
@@ -576,25 +392,26 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                           category,
                           style: TextStyle(
                             color: _selectedCategory == category
-                                ? Colors.white
-                                : Colors.black,
+                                ? AppTheme.appTheme().kWhiteColor
+                                : AppTheme.appTheme().kBlackColor,
                             fontSize: 16,
                           ),
                         ),
                         selected: _selectedCategory == category,
                         onSelected: (selected) {
                           _filterByColor(category);
-                          _isListViewVisible = true;
-                          // context.router.push(
-                          //   const FilterCategoriesRoute(),
-                          // );
+                          context.router.push(
+                            FilterColorRoute(
+                              category: category,
+                            ),
+                          );
                         },
-                        selectedColor: Colors.black,
-                        backgroundColor: Colors.white,
+                        selectedColor: AppTheme.appTheme().kBlackColor,
+                        backgroundColor: AppTheme.appTheme().kWhiteColor,
                         labelStyle: TextStyle(
                           color: _selectedCategory == category
-                              ? Colors.black
-                              : Colors.white,
+                              ? AppTheme.appTheme().kBlackColor
+                              : AppTheme.appTheme().kWhiteColor,
                           fontWeight: FontWeight.w400,
                         ),
                         shape: RoundedRectangleBorder(
@@ -608,118 +425,7 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                   }).toList(),
                 ),
               ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: StreamBuilder<List<ShoesModel>>(
-                  stream: _colorShoesStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No shoes found'),
-                      );
-                    }
-                    return GridView(
-                      gridDelegate: gridDelegate,
-                      children: snapshot.data!.map((shoe) {
-                        return SizedBox(
-                          height: 225,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: GestureDetector(
-                                  onTap: () => context.router.push(
-                                    ProductDetailRoute(
-                                      shoe: shoe,
-                                    ),
-                                  ),
-                                  child: Container(
-                                    color: Colors.white,
-                                    height: 140,
-                                    width: 170,
-                                    child:
-                                        //  SvgPicture.asset(
-                                        //   'assets/images/shoe1.svg',
-                                        // ),
-
-                                        Image.network(
-                                      shoe.image,
-                                      // 'assets/images/shoe1.png',
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                ),
-                                child: Text(
-                                  shoe.name,
-                                  maxLines: 1,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        child: const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                          size: 13.33,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 2),
-                                  Text(
-                                    shoe.averageRating,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: AppTheme.appTheme().kBlackColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const Text(
-                                    '(10 Reviews)',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                shoe.price,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 120),
               SizedBox(
                 height: 40,
                 child: Row(
@@ -731,12 +437,13 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                         onPressed: () => context.router
                             .pushNamed(ShoeslyRouter.discoverRoute),
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: AppTheme.appTheme().kWhiteColor,
                           side: const BorderSide(color: Colors.grey),
                         ),
-                        child: const Text(
+                        child: Text(
                           'RESET',
-                          style: TextStyle(color: Colors.black),
+                          style:
+                              TextStyle(color: AppTheme.appTheme().kBlackColor),
                         ),
                       ),
                     ),
@@ -744,15 +451,15 @@ class _FilterPageHandsetState extends State<FilterPageHandset> {
                       height: 55,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
+                          backgroundColor: AppTheme.appTheme().kBlackColor,
                         ),
                         onPressed: () => context.router.pushNamed(
                           ShoeslyRouter.discoverRoute,
                         ),
-                        child: const Text(
+                        child: Text(
                           'APPLY',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppTheme.appTheme().kWhiteColor,
                           ),
                         ),
                       ),

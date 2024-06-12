@@ -44,9 +44,8 @@ class _DecisionPageState extends State<DecisionPage> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable:
-          Hive.box<dynamic>(ShoeslyConfig.instance!.values.authBox)
-              .listenable(),
+      valueListenable: Hive.box<dynamic>(ShoeslyConfig.instance!.values.authBox)
+          .listenable(),
       builder: (context, box, _) {
         final accToken = getIt<HiveService>().retrieveToken();
         final profile = getIt<HiveService>().retrieveProfile();

@@ -9,7 +9,7 @@ import 'package:shoesly/utils/_index.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-   ShoeslyConfig(
+  ShoeslyConfig(
     values: ShoeslyValues(
       baseDomain: '',
       authBox: '',

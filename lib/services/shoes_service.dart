@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shoesly/models/shoes.dart';
-import 'package:shoesly/utils/network.dart';
 
+// ignore: one_member_abstracts
 abstract class ShoesService {
   Future<List<ShoesModel>> getAllShoes();
 }
 
 class ShoesServiceImpl implements ShoesService {
-  final _networkUtil = NetworkUtil();
 
   @override
   Future<List<ShoesModel>> getAllShoes() async {

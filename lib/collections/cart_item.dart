@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:shoesly/models/shoes.dart';
 
 part 'cart_item.g.dart';
 
@@ -24,8 +23,6 @@ class CartItem {
 
   Id id = Isar.autoIncrement;
 
-  //late ShoesModel shoes;
-  // late String id;
   late String uid;
   late String image;
   late String name;

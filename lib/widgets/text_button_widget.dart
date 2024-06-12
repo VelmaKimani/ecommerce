@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:shoesly/utils/color_pallette.dart';
+
+// ignore: must_be_immutable
 class TextButtonWidget extends StatefulWidget {
   TextButtonWidget({
-    Key? key,
     required this.buttonText,
     required this.onPressed,
+    super.key,
+  // ignore: prefer_asserts_with_message
   }) : assert(buttonText.length == onPressed.length);
 
   final List<String> buttonText;
@@ -32,10 +36,12 @@ class _TextButtonWidgetState extends State<TextButtonWidget> {
               padding: const EdgeInsets.all(8),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  foregroundColor:
-                      _selectedIndex == index ? Colors.white : Colors.black,
-                  backgroundColor:
-                      _selectedIndex == index ? Colors.black : Colors.white,
+                  foregroundColor: _selectedIndex == index
+                      ? AppTheme.appTheme().kWhiteColor
+                      : AppTheme.appTheme().kBlackColor,
+                  backgroundColor: _selectedIndex == index
+                      ? AppTheme.appTheme().kBlackColor
+                      : AppTheme.appTheme().kWhiteColor,
                   side: const BorderSide(color: Colors.grey),
                 ),
                 onPressed: () {

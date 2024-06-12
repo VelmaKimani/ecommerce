@@ -48,7 +48,6 @@ class Singletons {
       ),
       BlocProvider<DiscoverShoesCubit>(
         create: (context) => DiscoverShoesCubit(
-          shoesService: getIt(),
         ),
       ),
       BlocProvider<ReviewsCubit>(
@@ -56,7 +55,6 @@ class Singletons {
       ),
       BlocProvider<RecentCategoryCubit>(
         create: (context) => RecentCategoryCubit(
-          shoesService: getIt(),
         ),
       ),
       BlocProvider<AddCartCubit>(

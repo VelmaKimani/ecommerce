@@ -1,26 +1,26 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'package:shoesly/models/shoes.dart';
-import 'package:shoesly/utils/color_pallette.dart';
-import 'package:shoesly/utils/custom_text_theme.dart';
+import 'package:shoesly/utils/_index.dart';
+import 'package:shoesly/utils/router.gr.dart';
 
-class HomePageHandset extends StatefulWidget {
-  const HomePageHandset({super.key});
+class FilterGenderPageHandset extends StatefulWidget {
+  const FilterGenderPageHandset({
+    required this.category,
+    super.key,
+  });
 
+  final String category;
   @override
-  _HomePageHandsetState createState() => _HomePageHandsetState();
+  State<FilterGenderPageHandset> createState() =>
+      _FilterGenderPageHandsetState();
 }
 
-class _HomePageHandsetState extends State<HomePageHandset> {
-  String _selectedCategory = 'All';
-  final List<String> _categories = [
-    'All',
-    'Nike',
-    'Jordan',
-    'Adidas',
-    'Reebok',
-  ];
+class _FilterGenderPageHandsetState
+    extends State<FilterGenderPageHandset> {
+  String get category => widget.category;
   late Stream<List<ShoesModel>> _shoesStream;
 
   @override
@@ -31,31 +31,12 @@ class _HomePageHandsetState extends State<HomePageHandset> {
 
   Stream<List<ShoesModel>> _getShoesStream() {
     return FirebaseFirestore.instance
-        .collection('Shoes')
+        .collection('Shoes').where('Gender', isEqualTo: category)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
         return ShoesModel.fromMap(doc.data(), doc.id);
       }).toList();
-    });
-  }
-
-  void _filterByCategory(String category) {
-    setState(() {
-      _selectedCategory = category;
-      if (category == 'All') {
-        _shoesStream = _getShoesStream();
-      } else {
-        _shoesStream = FirebaseFirestore.instance
-            .collection('Shoes')
-            .where('Category', isEqualTo: category)
-            .snapshots()
-            .map((snapshot) {
-          return snapshot.docs.map((doc) {
-            return ShoesModel.fromMap(doc.data(), doc.id);
-          }).toList();
-        });
-      }
     });
   }
 
@@ -67,69 +48,50 @@ class _HomePageHandsetState extends State<HomePageHandset> {
       mainAxisExtent: 225,
       crossAxisSpacing: 20,
     );
-
     return Scaffold(
+      backgroundColor: AppTheme.appTheme().kGreyColor100,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_sharp,
+                    ),
+                  ),
+                  const SizedBox(width: 50),
                   Text(
-                    'Discover',
+                  '${widget.category} Shoes',
                     style: CustomTextTheme.customTextTheme(context)
                         .displayLarge
                         ?.copyWith(
                           fontWeight: FontWeight.w600,
-                          fontSize: 24,
+                          fontSize: 20,
                         ),
-                  ),
-                  Image.asset(
-                    'assets/icons/bag-1.png',
                   ),
                 ],
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: _categories.map((category) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ChoiceChip(
-                        label: Text(category),
-                        selected: _selectedCategory == category,
-                        onSelected: (selected) {
-                          _filterByCategory(category);
-                        },
-                      
-                        selectedColor: Colors.grey,
-                        disabledColor: Colors.grey[300],
-                        backgroundColor: Colors.grey[200],
-                        labelStyle: TextStyle(
-                          color: _selectedCategory == category
-                              ? Colors.black
-                              : Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
+              const SizedBox(height: 10),
               Expanded(
                 child: StreamBuilder<List<ShoesModel>>(
                   stream: _shoesStream,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No shoes found'));
+                      return const Center(
+                        child: Text('No shoes found'),
+                      );
                     }
                     return GridView(
                       gridDelegate: gridDelegate,
@@ -142,19 +104,17 @@ class _HomePageHandsetState extends State<HomePageHandset> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () => context.router.push(
+                                    ProductDetailRoute(
+                                      shoe: shoe,
+                                    ),
+                                  ),
                                   child: Container(
-                                    color: Colors.black12,
+                                    color: AppTheme.appTheme().kWhiteColor,
                                     height: 140,
                                     width: 170,
-                                    child:
-                                        //  SvgPicture.asset(
-                                        //   'assets/images/shoe1.svg',
-                                        // ),
-
-                                        Image.network(
+                                    child: Image.network(
                                       shoe.image,
-                                      // 'assets/images/shoe1.png',
                                       fit: BoxFit.scaleDown,
                                     ),
                                   ),
@@ -195,9 +155,9 @@ class _HomePageHandsetState extends State<HomePageHandset> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  const Text(
-                                    '(10 Reviews)',
-                                    style: TextStyle(
+                                  Text(
+                                    shoe.numberOfReviews,
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
                                       fontWeight: FontWeight.w500,

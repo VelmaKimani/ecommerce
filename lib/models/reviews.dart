@@ -8,6 +8,16 @@ class ReviewsModel {
     required this.date,
     required this.description,
   });
+
+  factory ReviewsModel.fromMap(Map<String, dynamic> data) {
+    return ReviewsModel(
+      image: data['Image'].toString(),
+      name: data['Name'].toString(),
+      numberOfStars: data['NumberOfStars'].toString(),
+      date: data['Date'].toString(),
+      description: data['Description'].toString(),
+    );
+  }
   factory ReviewsModel.fromSnapshot(
     DocumentSnapshot<Map<String, dynamic>> document,
   ) {
@@ -30,6 +40,7 @@ class ReviewsModel {
   String date;
   String description;
 
+  // ignore: prefer_constructors_over_static_methods
   static ReviewsModel empty() => ReviewsModel(
         image: '',
         name: '',
@@ -46,16 +57,6 @@ class ReviewsModel {
       'Date': date,
       'Description': description,
     };
-  }
-
-  factory ReviewsModel.fromMap(Map<String, dynamic> data, String documentId) {
-    return ReviewsModel(
-      image: data['Image'].toString(),
-      name: data['Name'].toString(),
-      numberOfStars: data['NumberOfStars'].toString(),
-      date: data['Date'].toString(),
-      description: data['Description'].toString(),
-    );
   }
 
   Map<String, dynamic> toMap() {

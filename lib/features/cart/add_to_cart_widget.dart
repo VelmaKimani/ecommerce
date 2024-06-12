@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:shoesly/features/cart/cubit/confirm_order_cubit.dart';
 import 'package:shoesly/features/discover/cubit/discover_shoes_cubit.dart';
 import 'package:shoesly/l10n/l10n.dart';
@@ -14,8 +15,8 @@ import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 class AddToCartWidget extends StatefulWidget {
   const AddToCartWidget({
     required this.shoes,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ShoesModel shoes;
   @override
@@ -74,10 +75,37 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
       'price': widget.shoes,
       'category': 'Running',
     }).then((value) {
-      print('Data Added');
+      Logger().i('Data Added');
+    // ignore: inference_failure_on_untyped_parameter
     }).catchError((error) {
-      print('Failed to add data: $error');
+      Logger().i('Failed to add data: $error');
     });
+  }
+
+  Future<void> addItem(ShoesModel shoe, String quantity) async {
+    try {
+      await FirebaseFirestore.instance.collection('Cart').add({
+        'Id': widget.shoes.id,
+        'Image': widget.shoes.image,
+        'Name': widget.shoes.name,
+        'Price': widget.shoes.price,
+        'NumberOfReviews': widget.shoes.numberOfReviews,
+        'AverageRating': widget.shoes.averageRating,
+        'Category': widget.shoes.category,
+        'Color': widget.shoes.color,
+        'Description': widget.shoes.description,
+        'SelectableSize': widget.shoes.selectableSize,
+        'TopReviews': widget.shoes.topReviews,
+        'TotalReviews': widget.shoes.totalReviews,
+        'Recency': widget.shoes.recency,
+        'Gender': widget.shoes.gender,
+        'Size': widget.shoes.size,
+        'Quantity': _cartItemController.text,
+      });
+      Logger().i('Item added successfully');
+    } catch (e) {
+      Logger().i('Failed to add item: $e');
+    }
   }
 
   @override
@@ -96,7 +124,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                   height: 55,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      backgroundColor: AppTheme.appTheme().kBlackColor,
                     ),
                     onPressed: () {
                       WoltModalSheet.show<ShoesModel>(
@@ -104,8 +132,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                         pageListBuilder: (modalSheetContext) {
                           return [
                             WoltModalSheetPage(
-                              backgroundColor:
-                                  AppTheme.appTheme().kBackgroundColor,
+                              backgroundColor: AppTheme.appTheme().kWhiteColor,
                               child: Padding(
                                 padding: const EdgeInsets.all(20),
                                 child:
@@ -217,6 +244,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                                                       );
                                                       context
                                                           .read<
+                                                              // ignore: lines_longer_than_80_chars
                                                               DiscoverShoesCubit>()
                                                           .getAllShoes();
                                                       Navigator.of(context)
@@ -232,27 +260,40 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            Colors.black,
+                                                            AppTheme.appTheme()
+                                                                .kBlackColor,
                                                       ),
-                                                      onPressed: () {
-                                                        addData(widget.shoes);
-                                                        context
+                                                      onPressed: () async {
+                                                        await addItem(
+                                                          widget.shoes,
+                                                          _cartItemController
+                                                              .text,
+                                                        );
+
+                                                        // ignore: use_build_context_synchronously
+                                                        await context
                                                             .read<
+                                                                // ignore: lines_longer_than_80_chars
                                                                 ConfirmOrderCubit>()
                                                             .confirmOrder(
                                                               cartItems:
                                                                   cartItems,
                                                             );
-                                                        context.router
+                                                        // ignore: use_build_context_synchronously
+                                                        await context.router
                                                             .pushNamed(
                                                           ShoeslyRouter
                                                               .cartRoute,
                                                         );
+                                                        _cartItemController
+                                                            .clear();
                                                       },
-                                                      child: const Text(
+                                                      child: Text(
                                                         'ADD TO CART',
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: AppTheme
+                                                                  .appTheme()
+                                                              .kWhiteColor,
                                                         ),
                                                       ),
                                                     ),
@@ -266,70 +307,6 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                                     ),
                                   ],
                                 ),
-                                // : Column(
-                                //     children: [
-                                //       const Icon(
-                                //         Icons.check_circle_outline_outlined,
-                                //         size: 80,
-                                //       ),
-                                //       Text(
-                                //         'Added to cart',
-                                //         style: CustomTextTheme.customTextTheme(
-                                //           context,
-                                //         ).displayMedium,
-                                //       ),
-                                //       Text(
-                                //         '1 Item Total',
-                                //         maxLines: 1,
-                                //         overflow: TextOverflow.ellipsis,
-                                //         style: TextStyle(
-                                //           fontSize: 12,
-                                //           color: Colors.grey.shade700,
-                                //         ),
-                                //       ),
-                                //       Row(
-                                //         children: [
-                                //           SizedBox(
-                                //             height: 55,
-                                //             width: double.infinity,
-                                //             child: OutlinedButton(
-                                //               onPressed: () =>
-                                //                   Navigator.of(context).pop(),
-                                //               style: OutlinedButton.styleFrom(
-                                //                 backgroundColor: Colors.white,
-                                //                 side: const BorderSide(
-                                //                   color: Colors.grey,
-                                //                 ),
-                                //               ),
-                                //               child: const Text(
-                                //                 'BACK EXPLORE',
-                                //                 style:
-                                //                     TextStyle(color: Colors.black),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //           SizedBox(
-                                //             height: 55,
-                                //             child: ElevatedButton(
-                                //               style: ElevatedButton.styleFrom(
-                                //                 backgroundColor: Colors.black,
-                                //               ),
-                                //               onPressed: () =>
-                                //                   context.router.pushNamed(
-                                //                 ShoeslyRouter.cartRoute,
-                                //               ),
-                                //               child: const Text(
-                                //                 'TO CART',
-                                //                 style: TextStyle(
-                                //                   color: Colors.white,
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ],
-                                //   ),
                               ),
                             ),
                           ];
@@ -340,9 +317,9 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                         maxPageHeight: 0.9,
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       'ADD TO CART',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: AppTheme.appTheme().kWhiteColor),
                     ),
                   ),
                 ),

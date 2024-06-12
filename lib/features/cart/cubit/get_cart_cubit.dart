@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:shoesly/models/cart_model.dart';
 
 part 'get_cart_cubit.freezed.dart';
@@ -21,7 +22,10 @@ class GetCartCubit extends Cubit<GetCartState> {
             CartModel.fromSnapshot,
           )
           .toList();
-
+      Logger().i(cartItems);
+      for (final model in cartItems) {
+        Logger().d(model.toJson());
+      }
       emit(GetCartState.loaded(cartItems: cartItems));
     } catch (e) {
       emit(GetCartState.error(e.toString()));

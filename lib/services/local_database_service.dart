@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:isar/isar.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:shoesly/collections/cart_item.dart';
 import 'package:shoesly/utils/singletons.dart';

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoesly/features/cart/cubit/get_cart_cubit.dart';
+import 'package:shoesly/services/cart_service.dart';
 import 'package:shoesly/utils/_index.dart';
 
 class CartPageHandset extends StatefulWidget {
@@ -38,7 +39,7 @@ class _CartPageHandsetState extends State<CartPageHandset> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppTheme.appTheme().kGreyColor100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -83,7 +84,7 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                           style: CustomTextTheme.customTextTheme(context)
                               .headlineMedium!
                               .copyWith(
-                                color: AppTheme.appTheme().kDullGreyColor,
+                                color: AppTheme.appTheme().kGreyColor100,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'Graphik',
                               ),
@@ -97,8 +98,7 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                                 .pushNamed(ShoeslyRouter.discoverRoute),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.appTheme().kBlackColor,
-                              foregroundColor:
-                                  AppTheme.appTheme().kBackgroundColor,
+                              foregroundColor: AppTheme.appTheme().kWhiteColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -112,8 +112,8 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                                       CustomTextTheme.customTextTheme(context)
                                           .displayLarge!
                                           .copyWith(
-                                            color: AppTheme.appTheme()
-                                                .kBackgroundColor,
+                                            color:
+                                                AppTheme.appTheme().kWhiteColor,
                                             fontSize: 14,
                                             fontFamily: 'Helvetica Neue',
                                           ),
@@ -121,7 +121,7 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                                 Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 16,
-                                  color: AppTheme.appTheme().kBackgroundColor,
+                                  color: AppTheme.appTheme().kWhiteColor,
                                 ),
                               ],
                             ),
@@ -191,12 +191,10 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                                     ),
                                     child: IconButton(
                                       onPressed: () {
-                                        // getIt<CartService>().removeFromCart(
-                                        //   cartItem.id,
-                                        // );
-                                        // Navigator.of(context).pop();
-                                        // color:
-                                        // Colors.white;
+                                        getIt<CartService>().removeFromCart(
+                                          int.parse(cart[index].id),
+                                        );
+                                        Navigator.of(context).pop();
                                       },
                                       icon: const Icon(Icons.delete),
                                     ),
@@ -206,11 +204,12 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Container(
-                                          color: Colors.white,
+                                          color:
+                                              AppTheme.appTheme().kWhiteColor,
                                           height: 100,
                                           width: 100,
-                                          child: Image.asset(
-                                            'assets/images/shoe1.png',
+                                          child: Image.network(
+                                            cart[index].image,
                                             fit: BoxFit.scaleDown,
                                           ),
                                         ),
@@ -317,15 +316,16 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                               height: 55,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
+                                  backgroundColor:
+                                      AppTheme.appTheme().kBlackColor,
                                 ),
                                 onPressed: () => context.router.pushNamed(
                                   ShoeslyRouter.checkoutRoute,
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'CHECKOUT',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: AppTheme.appTheme().kWhiteColor,
                                   ),
                                 ),
                               ),
@@ -347,288 +347,5 @@ class _CartPageHandsetState extends State<CartPageHandset> {
         ),
       ),
     );
-    // return Column(
-    //   children: [
-    //     Row(
-    //       children: [
-    //         InkWell(
-    //           onTap: () {
-    //             Navigator.of(context).pop();
-    //           },
-    //           child: const Icon(
-    //             Icons.arrow_back_sharp,
-    //           ),
-    //         ),
-    //         const SizedBox(width: 110),
-    //         Text(
-    //           'Cart',
-    //           style: CustomTextTheme.customTextTheme(context)
-    //               .displayLarge
-    //               ?.copyWith(
-    //                 fontWeight: FontWeight.w600,
-    //                 fontSize: 20,
-    //               ),
-    //         ),
-    //       ],
-    //     ),
-    //     const SizedBox(height: 10),
-
-    // return Column(
-    //   // height: MediaQuery.of(context).size.height * 0.8,
-    //   children: [
-    // ListView.builder(
-    //   itemCount: cart.length,
-    //   itemBuilder: (context, index) {
-    //     final cartItem = cart[index];
-    //     return SizedBox(
-    //       height: 125,
-    //       child: Dismissible(
-    //         key: Key(cartItem.name),
-    //         direction: DismissDirection.endToStart,
-    //         onDismissed: (direction) {
-    //           setState(() {
-    //             items.removeAt(index);
-    //           });
-    //           ScaffoldMessenger.of(context).showSnackBar(
-    //             SnackBar(
-    //               content: Text(
-    //                 '${cartItem.name} deleted',
-    //               ),
-    //             ),
-    //           );
-    //         },
-    //         background: Container(
-    //           alignment: Alignment.centerRight,
-    //           padding:
-    //               const EdgeInsets.symmetric(horizontal: 20),
-    //           decoration: BoxDecoration(
-    //             color: Colors.red,
-    //             borderRadius: BorderRadius.circular(20),
-    //           ),
-    //           child: IconButton(
-    //             onPressed: () {
-    //               getIt<CartService>().removeFromCart(
-    //                 cartItem.id,
-    //               );
-    //               Navigator.of(context).pop();
-    //               color:
-    //               Colors.white;
-    //             },
-    //             icon: const Icon(Icons.delete),
-    //           ),
-    //         ),
-    //         child: Row(
-    //           children: [
-    //             Column(
-    //               children: [
-    //                 Image.asset(
-    //                   'assets/images/shoe1.png',
-    //                   width: 80,
-    //                   height: 80,
-    //                 ),
-    //               ],
-    //             ),
-    //             const SizedBox(width: 16),
-    //             Expanded(
-    //               child: Column(
-    //                 crossAxisAlignment:
-    //                     CrossAxisAlignment.start,
-    //                 children: [
-    //                   const Text('Jordan 1 Rtero High Tie Dye'),
-    //                   const SizedBox(height: 5),
-    //                   const Text('Adidas. Grey. 42'),
-    //                   Row(
-    //                     children: [
-    //                       const Text('235.00'),
-    //                       const SizedBox(width: 95),
-    //                       IconButton(
-    //                         onPressed: _decrement,
-    //                         icon: const Icon(
-    //                           Icons.remove_circle_outline,
-    //                         ),
-    //                       ),
-    //                       Text(cartItemController.text),
-    //                       IconButton(
-    //                         onPressed: _increment,
-    //                         icon: const Icon(
-    //                           Icons.add_circle_outline,
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-
-    //           // Row(
-    //           //   crossAxisAlignment: CrossAxisAlignment.start,
-    //           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           //   children: [
-    //           //     const Padding(
-    //           //       padding: EdgeInsets.only(top: 8),
-    //           //       child: CircleAvatar(),
-    //           //     ),
-    //           //     Padding(
-    //           //       padding: const EdgeInsets.only(
-    //           //         left: 5,
-    //           //         right: 5,
-    //           //         top: 10,
-    //           //       ),
-    //           //       child: Column(
-    //           //         crossAxisAlignment: CrossAxisAlignment.start,
-    //           //         children: [
-    //           //           const SizedBox(
-    //           //             height: 25,
-    //           //             width: 230,
-    //           //             child: Text(
-    //           //               'Gretchen Septimus',
-    //           //               maxLines: 1,
-    //           //               overflow: TextOverflow.ellipsis,
-    //           //               style: TextStyle(
-    //           //                 fontSize: 15,
-    //           //                 fontWeight: FontWeight.w700,
-    //           //               ),
-    //           //             ),
-    //           //           ),
-    //           //           const SizedBox(height: 5),
-    //           //           const Row(
-    //           //             mainAxisSize: MainAxisSize.min,
-    //           //             children: [
-    //           //               Row(
-    //           //                 mainAxisSize: MainAxisSize.min,
-    //           //                 children: [Text('Hello')],
-    //           //               ),
-    //           //             ],
-    //           //           ),
-    //           //           const SizedBox(height: 3),
-    //           //           SizedBox(
-    //           //             height: 45,
-    //           //             width: 230,
-    //           //             child: Text(
-    //           //               'Perfect for keeping your feet dry.',
-    //           //               maxLines: 2,
-    //           //               overflow: TextOverflow.ellipsis,
-    //           //               style: TextStyle(
-    //           //                 fontSize: 12,
-    //           //                 color: Colors.grey.shade700,
-    //           //               ),
-    //           //             ),
-    //           //           ),
-    //           //         ],
-    //           //       ),
-    //           //     ),
-    //           //     Padding(
-    //           //       padding: const EdgeInsets.only(top: 8),
-    //           //       child: Text(
-    //           //         'Today',
-    //           //         maxLines: 1,
-    //           //         overflow: TextOverflow.ellipsis,
-    //           //         style: TextStyle(
-    //           //           fontSize: 12,
-    //           //           color: Colors.grey.shade700,
-    //           //         ),
-    //           //       ),
-    //           //     ),
-    //           //   ],
-    //           // ),
-    //         );
-    //       },
-    //     ),
-    //     Align(
-    //       alignment: Alignment.bottomCenter,
-    //       child: Row(
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           Column(
-    //             children: [
-    //               Text(
-    //                 'Grand Total',
-    //                 maxLines: 1,
-    //                 overflow: TextOverflow.ellipsis,
-    //                 style: TextStyle(
-    //                   fontSize: 12,
-    //                   color: Colors.grey.shade700,
-    //                 ),
-    //               ),
-    //               const Text(
-    //                 '&235.00',
-    //                 maxLines: 1,
-    //                 overflow: TextOverflow.ellipsis,
-    //                 style: TextStyle(
-    //                   fontSize: 15,
-    //                   fontWeight: FontWeight.w700,
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //           Column(
-    //             children: [
-    //               SizedBox(
-    //                 height: 55,
-    //                 child: BlocConsumer<DiscoverShoesCubit,
-    //                     DiscoverShoesState>(
-    //                   listener: (context, state) {
-    //                     state.maybeWhen(
-    //                       loading: () => setState(() {
-    //                         _isLoading = !_isLoading;
-    //                       }),
-    //                       loaded: (order) {
-    //                         setState(() {
-    //                           _isLoading = !_isLoading;
-    //                         });
-    //                         ScaffoldMessenger.of(context)
-    //                             .showSnackBar(
-    //                           SnackBar(
-    //                             content: Text(
-    //                               'Order Placed',
-    //                             ),
-    //                           ),
-    //                         );
-    //                       },
-    //                       error: (message) {
-    //                         setState(() {
-    //                           _isLoading = !_isLoading;
-    //                         });
-    //                         ScaffoldMessenger.of(context)
-    //                             .showSnackBar(
-    //                           SnackBar(
-    //                             content: Text(message),
-    //                           ),
-    //                         );
-    //                       },
-    //                       orElse: () {},
-    //                     );
-    //                   },
-    //                   builder: (context, state) {
-    //                     return state.maybeWhen(
-    //                       orElse: () => ElevatedButton(
-    //                         style: ElevatedButton.styleFrom(
-    //                           backgroundColor: Colors.black,
-    //                         ),
-    //                         onPressed: () =>
-    //                             context.router.pushNamed(
-    //                           ShoeslyRouter.checkoutRoute,
-    //                         ),
-    //                         child: const Text(
-    //                           'CHECK OUT',
-    //                           style: TextStyle(
-    //                             color: Colors.white,
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     );
-    //                   },
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ],
-    // );
   }
 }

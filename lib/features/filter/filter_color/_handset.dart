@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,20 +6,19 @@ import 'package:shoesly/models/shoes.dart';
 import 'package:shoesly/utils/_index.dart';
 import 'package:shoesly/utils/router.gr.dart';
 
-class FilterCategoriesPageHandset extends StatefulWidget {
-  const FilterCategoriesPageHandset({
-    required this.shoes, super.key,
+class FilterColorPageHandset extends StatefulWidget {
+  const FilterColorPageHandset({
+    required this.category,
+    super.key,
   });
 
-  final List<ShoesModel> shoes;
+  final String category;
   @override
-  State<FilterCategoriesPageHandset> createState() =>
-      _FilterCategoriesPageHandsetState();
+  State<FilterColorPageHandset> createState() => _FilterColorPageHandsetState();
 }
 
-class _FilterCategoriesPageHandsetState
-    extends State<FilterCategoriesPageHandset> {
-  List<ShoesModel> get shoes => widget.shoes;
+class _FilterColorPageHandsetState extends State<FilterColorPageHandset> {
+  String get category => widget.category;
   late Stream<List<ShoesModel>> _shoesStream;
 
   @override
@@ -32,6 +30,7 @@ class _FilterCategoriesPageHandsetState
   Stream<List<ShoesModel>> _getShoesStream() {
     return FirebaseFirestore.instance
         .collection('Shoes')
+        .where('Color', isEqualTo: category)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -49,7 +48,7 @@ class _FilterCategoriesPageHandsetState
       crossAxisSpacing: 20,
     );
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppTheme.appTheme().kGreyColor100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -68,7 +67,7 @@ class _FilterCategoriesPageHandsetState
                   ),
                   const SizedBox(width: 50),
                   Text(
-                    'Filtered Categories',
+                    '${widget.category} Shoes',
                     style: CustomTextTheme.customTextTheme(context)
                         .displayLarge
                         ?.copyWith(
@@ -110,17 +109,11 @@ class _FilterCategoriesPageHandsetState
                                     ),
                                   ),
                                   child: Container(
-                                    color: Colors.black12,
+                                    color: AppTheme.appTheme().kWhiteColor,
                                     height: 140,
                                     width: 170,
-                                    child:
-                                        //  SvgPicture.asset(
-                                        //   'assets/images/shoe1.svg',
-                                        // ),
-
-                                        Image.network(
+                                    child: Image.network(
                                       shoe.image,
-                                      // 'assets/images/shoe1.png',
                                       fit: BoxFit.scaleDown,
                                     ),
                                   ),
@@ -157,11 +150,11 @@ class _FilterCategoriesPageHandsetState
                                     shoe.averageRating,
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: AppTheme.appTheme().kBlackColor,
+                                      color: AppTheme.appTheme().kWhiteColor,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                   Text(
+                                  Text(
                                     shoe.numberOfReviews,
                                     style: const TextStyle(
                                       fontSize: 12,

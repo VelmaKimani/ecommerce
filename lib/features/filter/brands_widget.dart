@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:shoesly/utils/custom_text_theme.dart';
 
@@ -37,7 +36,6 @@ class _BrandsWidgetState extends State<BrandsWidget> {
             widget.brandName,
             style:
                 CustomTextTheme.customTextTheme(context).bodyMedium?.copyWith(
-                      // fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
           ),

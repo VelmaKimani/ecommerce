@@ -56,13 +56,13 @@ class ShoesOrderDTO with _$ShoesOrderDTO {
 
 @freezed
 class ShoesOrderItemDTO with _$ShoesOrderItemDTO {
-  factory ShoesOrderItemDTO(
-      {required String name,
-      required String image,
-      required String description,
-      required String price,
-      required String quantity,
-      }) = _ShoesOrderItemDTO;
+  factory ShoesOrderItemDTO({
+    required String name,
+    required String image,
+    required String description,
+    required String price,
+    required String quantity,
+  }) = _ShoesOrderItemDTO;
 
   factory ShoesOrderItemDTO.fromJson(Map<String, dynamic> json) =>
       _$ShoesOrderItemDTOFromJson(json);

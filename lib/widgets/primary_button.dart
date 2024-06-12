@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_asserts_with_message
+
 import 'package:flutter/material.dart';
+import 'package:shoesly/utils/color_pallette.dart';
 
 class PrimaryButtonWidget extends StatefulWidget {
   const PrimaryButtonWidget({
@@ -30,10 +33,12 @@ class _PrimaryButtonWidgetState extends State<PrimaryButtonWidget> {
             padding: const EdgeInsets.only(right: 10),
             child: ElevatedButton(
               style: OutlinedButton.styleFrom(
-                foregroundColor:
-                    _selectedIndex == index ? Colors.white : Colors.black,
-                backgroundColor:
-                    _selectedIndex == index ? Colors.black : Colors.white,
+                foregroundColor: _selectedIndex == index
+                    ? AppTheme.appTheme().kWhiteColor
+                    : AppTheme.appTheme().kBlackColor,
+                backgroundColor: _selectedIndex == index
+                    ? AppTheme.appTheme().kBlackColor
+                    : AppTheme.appTheme().kWhiteColor,
                 side: const BorderSide(color: Colors.grey),
               ),
               onPressed: () {

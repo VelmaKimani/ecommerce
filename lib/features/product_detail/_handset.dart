@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoesly/features/cart/add_to_cart_widget.dart';
 import 'package:shoesly/features/reviews/cubit/reviews_cubit.dart';
 import 'package:shoesly/models/shoes.dart';
+import 'package:shoesly/utils/color_pallette.dart';
 import 'package:shoesly/utils/custom_text_theme.dart';
 import 'package:shoesly/utils/router.dart';
 
@@ -35,7 +36,8 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
         children: [
           Icon(
             Icons.star,
-            color: index < _rating ? Colors.amber : Colors.grey,
+            color:
+                index < _rating ? AppTheme.appTheme().kAmberColor : Colors.grey,
             size: 14,
           ),
         ],
@@ -54,7 +56,7 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
         children: [
           Icon(
             Icons.star,
-            color: Colors.amber,
+            color: AppTheme.appTheme().kAmberColor,
             size: 14,
           ),
         ],
@@ -74,14 +76,17 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
         });
       },
       style: OutlinedButton.styleFrom(
-        backgroundColor: isSelected ? Colors.black : Colors.white,
+        backgroundColor: isSelected
+            ? AppTheme.appTheme().kBlackColor
+            : AppTheme.appTheme().kWhiteColor,
         shape: const CircleBorder(),
         side: BorderSide(color: Colors.grey[300]!),
       ),
       child: Text(
         number.toStringAsFixed(1),
         style: TextStyle(
-          color: isSelected ? Colors.white : Colors.grey[800],
+          color:
+              isSelected ? AppTheme.appTheme().kWhiteColor : Colors.grey[800],
         ),
       ),
     );
@@ -96,7 +101,7 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppTheme.appTheme().kGreyColor100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -140,17 +145,14 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                         child: GestureDetector(
                           onTap: () {},
                           child: Container(
-                            color: Colors.white,
+                            color: AppTheme.appTheme().kWhiteColor,
                             height: 315,
                             width: 345,
                             child:
-                                //  SvgPicture.asset(
-                                //   'assets/images/shoe3.svg',
-                                // ),
+                             
 
                                 Image.network(
                               widget.shoe.image,
-                              //fit: BoxFit.fill,
                             ),
                           ),
                         ),
@@ -225,7 +227,6 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                       ),
                       Text(
                         widget.shoe.description,
-                        // "Engineered to crush any movement-based workout, these On sneakers enhance the label's original Cloud sneaker with cutting edge technologies for a pair.",
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -345,12 +346,14 @@ class _ProductDetailPageHandsetState extends State<ProductDetailPageHandset> {
                           onPressed: () => context.router
                               .pushNamed(ShoeslyRouter.reviewsRoute),
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppTheme.appTheme().kWhiteColor,
                             side: BorderSide(color: Colors.grey[300]!),
                           ),
-                          child: const Text(
+                          child: Text(
                             'SEE ALL REVIEW',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(
+                              color: AppTheme.appTheme().kBlackColor,
+                            ),
                           ),
                         ),
                       ),

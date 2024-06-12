@@ -1,6 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShoesModel {
+
+  // ignore: avoid_unused_constructor_parameters
+  factory ShoesModel.fromMap(Map<String, dynamic> data, String documentId) {
+    return ShoesModel(
+      id: data['Id'].toString(),
+      image: data['Image'].toString(),
+      name: data['Name'].toString(),
+      price: data['Price'].toString(),
+      numberOfReviews: data['NumberOfReviews'].toString(),
+      averageRating: data['AverageRating'].toString(),
+      category: data['Category'].toString(),
+      color: data['Color'].toString(),
+      description: data['Description'].toString(),
+      selectableSize: data['SelectableSize'].toString(),
+      topReviews: data['TopReviews'].toString(),
+      totalReviews: data['TotalReviews'].toString(),
+      recency: data['Recency'].toString(),
+      gender: data['Gender'].toString(),
+      size: data['Size'].toString(),
+    );
+  }
+  // ignore: sort_unnamed_constructors_first
   ShoesModel({
     required this.id,
     required this.image,
@@ -60,6 +82,7 @@ class ShoesModel {
   String gender;
   String size;
 
+  // ignore: prefer_constructors_over_static_methods
   static ShoesModel empty() => ShoesModel(
         id: '',
         image: '',
@@ -75,7 +98,7 @@ class ShoesModel {
         totalReviews: '',
         recency: '',
         gender: '',
-        size:'',
+        size: '',
       );
 
   Map<String, dynamic> toJson() {
@@ -94,29 +117,8 @@ class ShoesModel {
       'TotalReviews': totalReviews,
       'Recency': recency,
       'Gender': gender,
-      'Size': size
+      'Size': size,
     };
-  }
-
-  factory ShoesModel.fromMap(Map<String, dynamic> data, String documentId) {
-    return ShoesModel(
-      id: data['Id'].toString(),
-      image: data['Image'].toString(),
-      name: data['Name'].toString(),
-      price: data['Price'].toString(),
-      numberOfReviews: data['NumberOfReviews'].toString(),
-      averageRating: data['AverageRating'].toString(),
-      category: data['Category'].toString(),
-      color: data['Color'].toString(),
-      description: data['Description'].toString(),
-      selectableSize: data['SelectableSize'].toString(),
-      topReviews: data['TopReviews'].toString(),
-      totalReviews: data['TotalReviews'].toString(),
-      recency: data['Recency'].toString(),
-      gender: data['Gender'].toString(),
-            size: data['Size'].toString(),
-
-    );
   }
 
   Map<String, dynamic> toMap() {
@@ -135,9 +137,10 @@ class ShoesModel {
       'TotalReviews': totalReviews,
       'Recency': recency,
       'Gender': gender,
-      'Size':size,
+      'Size': size,
     };
   }
 
+  // ignore: inference_failure_on_function_return_type, always_declare_return_types, type_annotate_public_apis
   static fromJson(Map<String, dynamic> response) {}
 }

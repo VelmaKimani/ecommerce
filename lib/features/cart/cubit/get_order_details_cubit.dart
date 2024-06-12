@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shoesly/models/shoes_order.dart';
 import 'package:shoesly/services/order_service.dart';
 
-
 part 'get_order_details_cubit.freezed.dart';
 part 'get_order_details_state.dart';
 

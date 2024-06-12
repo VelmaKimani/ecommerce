@@ -27,7 +27,6 @@ class ConfirmOrderCubit extends Cubit<ConfirmOrderState> {
     emit(const ConfirmOrderState.loading());
 
     try {
-
       final order = await _orderService.createOrder(
         orderDTO: ShoesOrderDTO(
           orderItems: cartItems

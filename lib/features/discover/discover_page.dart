@@ -12,9 +12,9 @@ class DiscoverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>  DiscoverPageHandset(),
+      defaultBuilder: (_, __) => const DiscoverPageHandset(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) =>  DiscoverPageHandset(),
+        handset: (_, __) => const DiscoverPageHandset(),
       ),
     );
   }

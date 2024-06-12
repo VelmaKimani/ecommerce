@@ -41,8 +41,7 @@ class HiveServiceImpl implements HiveService {
 
   @override
   ShoeslyUser? retrieveProfile() {
-    final box =
-        Hive.box<dynamic>(ShoeslyConfig.instance!.values.authBox);
+    final box = Hive.box<dynamic>(ShoeslyConfig.instance!.values.authBox);
     return box.get('profile') as ShoeslyUser?;
   }
 }

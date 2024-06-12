@@ -37,7 +37,7 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
-        return ReviewsModel.fromMap(doc.data(), doc.id);
+        return ReviewsModel.fromMap(doc.data(),);
       }).toList();
     });
   }
@@ -54,27 +54,25 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
             .snapshots()
             .map((snapshot) {
           return snapshot.docs.map((doc) {
-            return ReviewsModel.fromMap(doc.data(), doc.id);
+            return ReviewsModel.fromMap(doc.data(),);
           }).toList();
         });
       }
     });
   }
 
-  int _rating = 0;
 
   Widget _buildStar(int index) {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _rating = index + 1;
         });
       },
-      child: const Row(
+      child: Row(
         children: [
           Icon(
             Icons.star,
-            color: Colors.amber,
+            color: AppTheme.appTheme().kAmberColor,
             size: 14,
           ),
         ],
@@ -85,7 +83,7 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppTheme.appTheme().kGreyColor100,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -152,7 +150,7 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
                                 category,
                                 style: TextStyle(
                                   color: _selectedCategory == category
-                                      ? Colors.black
+                                      ? AppTheme.appTheme().kBlackColor
                                       : Colors.grey,
                                   fontSize: 18,
                                 ),
@@ -165,8 +163,8 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
                               backgroundColor: Colors.grey[200],
                               labelStyle: TextStyle(
                                 color: _selectedCategory == category
-                                    ? Colors.black12
-                                    : Colors.white,
+                                    ? AppTheme.appTheme().kBlackColor12
+                                    : AppTheme.appTheme().kWhiteColor,
                                 fontWeight: FontWeight.bold,
                               ),
                               shape: RoundedRectangleBorder(
