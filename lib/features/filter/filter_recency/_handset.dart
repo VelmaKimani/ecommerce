@@ -18,8 +18,7 @@ class FilterRecencyPageHandset extends StatefulWidget {
       _FilterRecencyPageHandsetState();
 }
 
-class _FilterRecencyPageHandsetState
-    extends State<FilterRecencyPageHandset> {
+class _FilterRecencyPageHandsetState extends State<FilterRecencyPageHandset> {
   String get category => widget.category;
   late Stream<List<ShoesModel>> _shoesStream;
 
@@ -31,7 +30,8 @@ class _FilterRecencyPageHandsetState
 
   Stream<List<ShoesModel>> _getShoesStream() {
     return FirebaseFirestore.instance
-        .collection('Shoes').where('Recency', isEqualTo: category)
+        .collection('Shoes')
+        .where('Recency', isEqualTo: category)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -68,7 +68,7 @@ class _FilterRecencyPageHandsetState
                   ),
                   const SizedBox(width: 50),
                   Text(
-                   '${widget.category} Shoes',
+                    '${widget.category} Shoes',
                     style: CustomTextTheme.customTextTheme(context)
                         .displayLarge
                         ?.copyWith(
@@ -139,9 +139,11 @@ class _FilterRecencyPageHandsetState
                                   Row(
                                     children: [
                                       GestureDetector(
-                                        child: const Icon(
+                                        child:  Icon(
                                           Icons.star,
                                           size: 13.33,
+                                           color:
+                                              AppTheme.appTheme().kAmberColor,
                                         ),
                                       ),
                                     ],
@@ -156,7 +158,7 @@ class _FilterRecencyPageHandsetState
                                     ),
                                   ),
                                   Text(
-                                    shoe.numberOfReviews,
+                                    '(${shoe.numberOfReviews})',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
@@ -167,7 +169,7 @@ class _FilterRecencyPageHandsetState
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                shoe.price,
+                                '\$${shoe.price}',
                                 maxLines: 1,
                                 style: const TextStyle(
                                   fontSize: 14,

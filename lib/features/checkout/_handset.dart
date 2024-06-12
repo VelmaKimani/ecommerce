@@ -234,7 +234,7 @@ class _CheckoutPageHandsetState extends State<CheckoutPageHandset> {
                                               ),
                                             ),
                                             Text(
-                                              cart[index].price,
+                                              '\$${cart[index].price}',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(

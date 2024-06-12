@@ -37,7 +37,9 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
-        return ReviewsModel.fromMap(doc.data(),);
+        return ReviewsModel.fromMap(
+          doc.data(),
+        );
       }).toList();
     });
   }
@@ -54,19 +56,19 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
             .snapshots()
             .map((snapshot) {
           return snapshot.docs.map((doc) {
-            return ReviewsModel.fromMap(doc.data(),);
+            return ReviewsModel.fromMap(
+              doc.data(),
+            );
           }).toList();
         });
       }
     });
   }
 
-
   Widget _buildStar(int index) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-        });
+        setState(() {});
       },
       child: Row(
         children: [
@@ -118,14 +120,15 @@ class _ReviewsPageHandsetState extends State<ReviewsPageHandset> {
                                 fontSize: 20,
                               ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 50,
                           child: Row(
                             children: [
                               Icon(
                                 Icons.star,
+                                color: AppTheme.appTheme().kAmberColor,
                               ),
-                              Text(
+                              const Text(
                                 '4.5',
                                 style: TextStyle(
                                   fontSize: 14,

@@ -246,7 +246,7 @@ class _CartPageHandsetState extends State<CartPageHandset> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  cart[index].price,
+                                                  '\$${cart[index].price}',
                                                   style: CustomTextTheme
                                                           .customTextTheme(
                                                     context,

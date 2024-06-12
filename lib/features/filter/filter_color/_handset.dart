@@ -138,9 +138,11 @@ class _FilterColorPageHandsetState extends State<FilterColorPageHandset> {
                                   Row(
                                     children: [
                                       GestureDetector(
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.star,
                                           size: 13.33,
+                                          color:
+                                              AppTheme.appTheme().kAmberColor,
                                         ),
                                       ),
                                     ],
@@ -150,12 +152,12 @@ class _FilterColorPageHandsetState extends State<FilterColorPageHandset> {
                                     shoe.averageRating,
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: AppTheme.appTheme().kWhiteColor,
+                                      color: AppTheme.appTheme().kBlackColor,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                   Text(
-                                    shoe.numberOfReviews,
+                                    '(${shoe.numberOfReviews})',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
@@ -166,7 +168,7 @@ class _FilterColorPageHandsetState extends State<FilterColorPageHandset> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                shoe.price,
+                                '\$$shoe.price',
                                 maxLines: 1,
                                 style: const TextStyle(
                                   fontSize: 14,

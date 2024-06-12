@@ -18,8 +18,7 @@ class FilterGenderPageHandset extends StatefulWidget {
       _FilterGenderPageHandsetState();
 }
 
-class _FilterGenderPageHandsetState
-    extends State<FilterGenderPageHandset> {
+class _FilterGenderPageHandsetState extends State<FilterGenderPageHandset> {
   String get category => widget.category;
   late Stream<List<ShoesModel>> _shoesStream;
 
@@ -31,7 +30,8 @@ class _FilterGenderPageHandsetState
 
   Stream<List<ShoesModel>> _getShoesStream() {
     return FirebaseFirestore.instance
-        .collection('Shoes').where('Gender', isEqualTo: category)
+        .collection('Shoes')
+        .where('Gender', isEqualTo: category)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -68,7 +68,7 @@ class _FilterGenderPageHandsetState
                   ),
                   const SizedBox(width: 50),
                   Text(
-                  '${widget.category} Shoes',
+                    '${widget.category} Shoes',
                     style: CustomTextTheme.customTextTheme(context)
                         .displayLarge
                         ?.copyWith(
@@ -139,9 +139,11 @@ class _FilterGenderPageHandsetState
                                   Row(
                                     children: [
                                       GestureDetector(
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.star,
                                           size: 13.33,
+                                           color:
+                                              AppTheme.appTheme().kAmberColor,
                                         ),
                                       ),
                                     ],
@@ -156,7 +158,7 @@ class _FilterGenderPageHandsetState
                                     ),
                                   ),
                                   Text(
-                                    shoe.numberOfReviews,
+                                    '(${shoe.numberOfReviews})',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
@@ -167,7 +169,7 @@ class _FilterGenderPageHandsetState
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                shoe.price,
+                                '\$${shoe.price}',
                                 maxLines: 1,
                                 style: const TextStyle(
                                   fontSize: 14,

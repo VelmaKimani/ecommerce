@@ -24,7 +24,8 @@ import 'package:shoesly/features/filter/filter_recency/filter_recency_page.dart'
 import 'package:shoesly/features/product_detail/product_detail_page.dart'
     as _i9;
 import 'package:shoesly/features/reviews/reviews_page.dart' as _i10;
-import 'package:shoesly/features/transaction_complete/_handset.dart' as _i11;
+import 'package:shoesly/features/transaction_complete/transaction_complete.dart'
+    as _i11;
 import 'package:shoesly/models/shoes.dart' as _i14;
 
 abstract class $ShoeslyRouter extends _i12.RootStackRouter {
@@ -108,14 +109,10 @@ abstract class $ShoeslyRouter extends _i12.RootStackRouter {
         child: const _i10.ReviewsPage(),
       );
     },
-    TransactionCompleteRouteHandset.name: (routeData) {
-      final args = routeData.argsAs<TransactionCompleteRouteHandsetArgs>();
+    TransactionCompleteRoute.name: (routeData) {
       return _i12.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.TransactionCompletePageHandset(
-          shoe: args.shoe,
-          key: args.key,
-        ),
+        child: const _i11.TransactionCompletePage(),
       );
     },
   };
@@ -358,40 +355,15 @@ class ReviewsRoute extends _i12.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.TransactionCompletePageHandset]
-class TransactionCompleteRouteHandset
-    extends _i12.PageRouteInfo<TransactionCompleteRouteHandsetArgs> {
-  TransactionCompleteRouteHandset({
-    required _i14.ShoesModel shoe,
-    _i13.Key? key,
-    List<_i12.PageRouteInfo>? children,
-  }) : super(
-          TransactionCompleteRouteHandset.name,
-          args: TransactionCompleteRouteHandsetArgs(
-            shoe: shoe,
-            key: key,
-          ),
+/// [_i11.TransactionCompletePage]
+class TransactionCompleteRoute extends _i12.PageRouteInfo<void> {
+  const TransactionCompleteRoute({List<_i12.PageRouteInfo>? children})
+      : super(
+          TransactionCompleteRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'TransactionCompleteRouteHandset';
+  static const String name = 'TransactionCompleteRoute';
 
-  static const _i12.PageInfo<TransactionCompleteRouteHandsetArgs> page =
-      _i12.PageInfo<TransactionCompleteRouteHandsetArgs>(name);
-}
-
-class TransactionCompleteRouteHandsetArgs {
-  const TransactionCompleteRouteHandsetArgs({
-    required this.shoe,
-    this.key,
-  });
-
-  final _i14.ShoesModel shoe;
-
-  final _i13.Key? key;
-
-  @override
-  String toString() {
-    return 'TransactionCompleteRouteHandsetArgs{shoe: $shoe, key: $key}';
-  }
+  static const _i12.PageInfo<void> page = _i12.PageInfo<void>(name);
 }
